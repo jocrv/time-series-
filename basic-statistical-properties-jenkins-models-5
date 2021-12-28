@@ -1,0 +1,245 @@
+p5 
+Basic statistical properties of the Box and Jenkins models
+Presentation
+In this class we will calculate the expected value and the variance of the ARMA models, proposed by Box and Jenkins and presented in class 4. We will start with a review of the formulas already presented for the simpler models (AR and MA of order 1) and then we'll look at the expressions for the higher-order AR and MA models and for the general ARMA class.
+
+Goals
+State the expected value and the variance of autoregressive models of order p, AR(p);
+State the expected value and variance of q-order moving average models, MA(q)
+State the expected value and variance of ARMA models of orders p and q, ARMA(p,q)
+5.1 - AR(1) Model - expected value and variance
+In class 3, we calculated the expected value and variance of the AR(1) model. In class 4, the same was done for the MA(1) model. The table summarizes the formulas already obtained in these lessons.
+
+Model Representation E(Yt) V(Yt)
+AR(1) without constant
+Yt=ϕ1Yt(+εt
+0
+σ21-ϕ12
+AR(1) with constant
+Yt=ϕ0+ϕ1Yt(+εt
+ϕ21ϕ1
+σ21ϕ12
+MA(1) without constant
+Yt = εt-θ1εtA(
+0
+(1+θ12)σ2
+MA(1) with constant
+Yt = θ0+(t-θ1εt(
+θ0
+(1+θ12)σ2
+In this class we present a procedure that allows us to calculate the expected value and the variance for higher order AR models and for the more general class of ARMA models. This procedure is only valid for stationary models, that is, that verify the stationarity conditions presented in class 4. Once the conditions are verified, it is imperative that:
+
+E(Yt) = μ, ∀ t = 1,2,...,T (constant mean)
+
+V(Yt) = 2, ∀ t = 1,2,...,T (constant variance)
+
+and apply these conditions to calculate the expected value and variance. In section 4.2 we will apply this method to confirm the results found in class 3, for the AR(1) model.
+
+5.2 - AR(1) Model - Expected Value and Variance
+In Chapter 3, we saw that for the AR(1) model without constant:
+
+Y1=ε1(assuming Y0=0)Y2=ϕY1+ε2=ϕε1+ε2Y3=ϕY2+ε3=ϕε1+ϕε2+ε3Y4=ϕY3+ε4=ϕ3ε1+ϕ2ε2+ϕε3+ε4
+
+The general formula for a generic t instant is:
+
+Yt=∑i=0t-1ϕiεt-1
+Whose expected value is:
+
+∑i=0t-1ϕiεt-i)=∑i=0t-1ϕiE(εt-1)=0
+since 𝐸(ε𝑖 )=0, by definition.
+
+The variance of (𝑌t) is (the ε𝑖 are uncorrelated):
+
+V(Yt)=V(∑ϕiεt-ii=0t-1) =∑i=0t-1ϕ2iv(εt-i) ∑i=0t-1ϕ2iσ2=σ2∑i=0t-1ϕ2i.
+Now notice that the terms inside the summation define a geometric progression: φ0, φ2, φ4,, ..., up to φ2(t-1), that is, with first term 1 (since φ0 = 1) and ratio φ2. Remembering now that the sum of the terms of a finite geometric progression with t terms, the first term being equal to "a" _1 and the ratio equal to q, is given by:
+
+St=a1(1-qt)1-q
+And noting that, in the case in question, a1 = 1 and q = φ2, we have:
+
+∑ϕ2ii=0t-1 = 1-ϕ2t1-ϕ2
+
+And so:
+
+∑ϕ2ii=0t-1 = 1-ϕ2t1-ϕ2
+Note that if t tends to infinity, the above result is constant since |φ| < 1, in which case the term φ2t approaches zero. In this case:
+
+V(Yt)= ϕ21-ϕ2
+For the model with constant:
+
+Yt=ϕ0+ϕ1Yt-1+εt
+The expected value was obtained as follows:
+
+Yt=ϕ0∑i=0t-1ϕ1i+∑i=0t-1ϕ1iεt-1,E(Yt) = ϕ0∑i=0t-1ϕ1i
+As for the sum, we can apply the formula for the sum of the geometric progression:
+
+∑i=0t-1ϕ1i=1-ϕ1i1-ϕ1.
+Applying the obtained expression to the expected value:
+
+E(Yt)=ϕ0∑i=0t-1ϕ1i=ϕ01-ϕ1t1-ϕ1.
+Again, if |φ1 | < 1, φt' tends to zero when t tends to infinity, and in this case:
+
+E(Yt)=ϕ01-ϕ1.
+And the variance:
+
+V(Yt)=σ2∑i=0t-1ϕ2i=1-ϕ2t1-ϕ2σ2.
+Again, if t tends to infinity, the above result is constant since || < 1, in which case the term ^2𝑡 approaches zero. In this case:
+
+V(Yt)=σ21-ϕ2
+Next, we will confirm the expected value and variance of AR(1). Confirming the expected value of AR(1) (with constant):
+
+E(Yt)=E(ϕ0 )+ϕ1 E(Yt-1) +Eεt =ϕ0+ϕ1E(Yt-1) ++0 =ϕ0+ϕ1E(Yt-1).
+
+The problem is that we don't know E(Yt−1).
+
+However, under" stationarity, we have that E(Yt)=E(Yt−1).
+
+Hence:E(Yt )=ϕ0+ϕ1E(Yt)⇒E(Yt) ϕ01-ϕ1, as we wanted to demonstrate.
+Comment
+Note that the method above is much easier than the recursive method adopted in class 3. Additionally, for that method it becomes unfeasible to extend the results to more complex models. Using the stationarity property, this task becomes simple.
+
+Confirming the variance of AR(1) (with constant):
+
+V(Yt )=V(ϕ0)+ϕ12V(Yt-1 )+V(εt)=0+ϕ12V(Yt-1 )+σ2, since Cov (Yt-1, εt)
+Again, the problem is that we don't know V(Yt−1).
+
+However, under" stationarity, we have that:V(Yt ) = V(Yt−1).
+
+Hence: V(Yt )=ϕ12V(Yt )+σ2⇒V(Yt )=σ21=ϕ12, as we wanted to demonstrate.
+To prove"r that " Cov(Yt−1,εt)0, let's use "the general form of AR" (1), already derived in class 3." The general form ad:"
+
+Yt =ϕ0(1+ϕ0+ϕ12+...+ϕ1t...)+ϕ1t+ε1+ϕ1tε2+...+εt or:
+
+All terms on the right side of this equation have zero correlation with 𝜀_𝑡, as it is white noise. This concludes the test.
+
+ 
+Next, we will expand the above results to higher order models.
+
+ 5.3 - Models AR(2) and AR(p)
+
+ Starting with AR(2), represented by the following equation:
+
+Yt =ϕ0+ϕ1Yt-1 +ϕ2Yt-2 +εt
+So:
+
+E(Yt )=E(ϕ0)+ϕ1E(Yt-1 )+ϕ2E(Yt-2 )+E(εt )=ϕ0+ϕ1E(Yt-1 )+ϕ2E(Yt-2 )+0=ϕ0+ϕ1E (Yt-1 )+ϕ2E(Yt-2)
+However, under" stationarity, we have that Yt = E(Yt-1=Yt-2)
+
+Hence: E(Yt )=ϕ0+ϕ1E(Yt )+ϕ2E(Yt )⇒E(Yt )=ϕ01ϕ1-ϕ2
+With analogous accounts, it's easy to see that, in the case of AR(p):
+
+E(Yt )=ϕ01∑j=1pϕj
+5.4 - MA(2) and MA(q) models
+Recall that the MA(q) model is represented by the following equation:
+
+Yt=εt-θ1εtem-θ2εtem
+As this model is given by a linear combination of current and lagged values ​​of a white noise, we have a facilitator, which is precisely the simplifying properties of a white noise stochastic process, presented in class 3 and remembered below:
+
+E(εt)=0,∀tV(εt)=σ2,∀tCorr(εi,εj)=0,∀t, r
+Thus, the use of the method proposed in section 4.1 is not even necessary, and it is immediate to generalize the results of the MA(1) model obtained in class 4 to the MA(2) and MA(q) models.
+
+Remembering that in the case of MA(1) we proceeded (in class 4) as follows:
+
+E(Yt)=0 (without added constant) or θ0(with constant θ0).V(Yt)=V(εt)+θ12V(εtvc), because Cov(εt,εt,o)=0.E as V( εt)=V(εtvc)=σ2, we arrive at:V(Yt)=σ2+θ12σ2=(1+θ12)σ2
+Thus:
+
+V(Yt)=σ2+θ12σ2+θ22σ2=(1+θ12+θ212)σ2
+
+It is easy to generalize the above formula to the MA(q) model:
+
+V(Yt)=(1+∑j=1qθ12)σ2
+The presence of a constant θ0 does not change the results for the variance in any way.
+
+Consider the following MA(2) model:
+
+Yt=εt-0.6εt-1-0.3εt-2, εt ~i.i.dN(0, 2), ∀t
+Determine the expected value and variance of this model.
+
+E(Yt )=0 (since there is no added constant)V(Yt)=(1+θ12+θ22)σ2=(1+(0.6)2+(0.3)2 ) 221.45∗4 = 5.8."
+5.5 - ARMA model(1,1)
+The ARMA(1,1) equation is recalled below:
+
+Yt =ϕ1Yte +εt+1εte
+Following the logic of what has already been done for the case of the AR(1) model, remembering that E(εt )=0, ∀t, it is easily shown that:
+
+E(Yt)=ϕ01-ϕ1,
+a result that would also be valid for an ARMA(1,q), q > 1.
+
+As for an ARMA(p,q), it can be shown very simply that:
+
+E(Yt)=ϕ01=∑j=1pϕj,
+The calculation of the variance of the ARMA(1,1) model involves a more complex algebrism, shown below.
+
+First, to calculate V(ϕ1 Yt-1+ 𝜀t + 𝜃1𝜀𝑡−1, one must take into account that 𝑌𝑡−1 and 𝜀𝑡−1 are correlated, and so the following result of probability theory will be useful:
+
+Let C = aX + bY, a linear combination of two random variables X and Y, where a and b are constant. So, it can be proved that:
+
+V(C) = a2V(X) + b2V(Y) + 2abCov(X,Y).
+
+First, it is verified that neither 𝑌𝑡−1 nor 𝜀𝑡−1 present correlates 𝜀_𝑡. Thus:
+
+V(ϕ1Yt(s+εt+(1εt(s) =V(ϕ1Yt(s+(1εt(s)) +V(εt)
+Now, to calculate V(ϕ1Ytgo+g1εtgo), it is necessary to apply the formula of V(C), using X=Ytn, Y=εtY, a=□ϕ1 and b=e1. We will have as a result:
+
+V(ϕ1Yt(T+(1εt(T)=φ12V(Yt=T)θ12V(εt=T)-=φ1θ1Cov(Ytov, εtov)
+Remembering now that V(εt)=σ2, ∀t, we have:
+
+V(Yt)=φ12V(Ytt)+θ12σ2-φ1θ1Cov(Ytov, εtov)+σ2
+Remembering now that Cov(Ytov,εtov) is presented next.
+
+V(Yt)=φ12V(Ytt)+θ12σ2-φ1θ1Cov(Ytov, εtov)+σ2Cov(Ytov, εtov)=Cov(φ1Ytov +εtov-θ1εtov,εtov)=Cov(εtov,εtov)=V(εtVav)= (Yt)=φ12V(Ytt)+V(εt)+θ12V(εt(v)Vφ1θ1σ2
+Finally, under" stationarity, we have: V(Yt)=V(YtVs)
+
+So:
+
+V(Yt)=φ12V(Yt)+σ2+θ12σ2-sφ1θ1σ2(1si12) V (Yt)+σ2+θ12σ2-Vφ1θ1σ2⇒V(Yt)=1+θ12-+φ1θ11+φ12σ2
+A common “gotcha” in public tenders is usually the presentation of the above formula without considering the covariance term in the demonstration, which would result in:
+
+V(Yt)=1+θ121+φ12σ2
+Finally, note that a constant added to the model would not change its variance.
+
+Let's see an example? Consider the following ARMA(1,1) model:
+
+Yt=0.2 +0.5Yt5+ εt+-0.8εt0,εt ~iidN(0, 3), ∀tDetermine the expected value and variance of this model.Solution:E(Yt)=ϕ01-ϕ1=0.20.5=0.4V( Yt)=1+(-+0.)2-+(0.5)(-.5.)1.φ124=2,440.754=≅13.
+We are now able to expand the framework at the beginning of the class to incorporate the new results:
+The calculation of the variance of these models involves algebra, which is beyond the scope of this material and will be left as an extension.
+
+Example 5.3 - Look at the series below. Which one or which of the models on the board could you discard to represent it?
+
+The model mean Yt=3 +0.5Yt-1+ εt where εt ~i.i.dN(0, 1), ∀t, is:
+
+a) 0
+b) 1.5
+c) 3
+d) 6
+e) 8
+
+
+Option d. 3/(1-0.5) = 3/0.5 = 6.
+
+The variance of the model Yt=3 + εt- 0.5εt-1 where εt ~i.i.dN(0, 4), ∀t, is:
+
+a) 3
+b) 5
+c) 8
+d) 6
+e) 12
+
+
+Option b. (1+0.52)*4 = 1.25*4 = 5.
+
+The following is the annual series of bituminous coal production in the United States between the years 1920 and 1968.
+
+Source: HYNDMAN, R.J.; ATHANASOPOULOS (2018)
+
+Which of the following models would be a candidate to represent this series?
+
+a) Simple random walk
+b) Random walk with constant
+c) AR(1) stationary without constant
+d) AR(1) stationary with constant
+e) None of the above
+
+
+Option d. It is the only one among the options that characterizes a stationary model in the mean and with a mean different from zero.
+
+
