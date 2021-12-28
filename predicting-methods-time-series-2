@@ -1,0 +1,381 @@
+Methods for Predicting a Time Series
+Presentation
+We will present the concepts involving the prediction of a time series, and the main methods used for this purpose: Naive method, exponential smoothing moving averages and its variants.
+
+Next, we will define the main metrics to assess the quality of predictions, covering a procedure for their validation.
+
+Goals
+Examine the main concepts related to time series forecasting;
+Apply the usual methods to obtain a forecast of the future values ​​of a series;
+Comparatively evaluate a set of predictions to drive their validation.
+Basic Concepts in Forecasting
+A prediction method is a formula used to make a prediction from previous observations; often called the prediction function, although this concept also applies when using a prediction model, as we will see later.
+
+The origin of the forecast is the instant from which it is made (that is, the observations up to that instant are considered). The horizon is how far ahead we want to predict.
+
+Example
+If we want to forecast a monthly series for up to one year ahead, the forecast horizon is 12 months
+
+It should be noted that, if the origin is at time t, we are interested in obtaining predictions not only for t+12, but for t+1, t+2, ... up to t+12.
+
+Generally speaking, the prediction at time t (origin) for k steps ahead is denoted by: 𝑌 ̂_(𝑡+𝑘|𝑡). If the forecast horizon is h, this means we want forecasts for t+k; k = 1, 2, ..., 12.
+
+There are two approaches to conducting time series predictions: Using methods or based on models. In this class, we will be restricted to prediction methods, which are nothing more than prediction functions defined ad hoc (that is, arbitrarily). This will always be done with some logic, of course, but with no underlying statistical rationale.
+
+There are two approaches to conducting time series predictions: Using methods or based on models. In this class, we will be restricted to prediction methods, which are nothing more than prediction functions defined ad hoc (that is, arbitrarily). This will always be done with some logic, of course, but with no underlying statistical rationale.
+Naive and Moving Averages Methods
+2.2.1 - Naive Method
+It consists of using the value of the last observation as a forecast:
+Y^t+1|t=Yt
+Comment
+The main criticism of the naive method is that it only uses the information from the last observation. Still, it is considered a good forecasting strategy in some applications, such as forecasting prices in the financial market.
+
+2.2.2 - Moving Average Method
+It consists of using as a forecast the simple average of the L most recent observations:
+
+Y^t+1|t=Yt + Yt-1+...+ Yt-(L-1)L
+L is called the window size. The average is called “moving” because, as new observations become available, changing the source of the forecast, the prediction function “shifts” to the right, taking the last observation from the previous average and including the new one.
+
+Comment
+The main criticism of the moving average method is that it assigns equal weights to the observations in the window, and abruptly resets the weight of the oldest (T-L) ones. It is intuitively more reasonable to attach greater importance to more recent information.
+
+To get around this problem, the exponential smoothing method appears.
+Exponential Damping Method
+It is the most popular among forecasting methods. Its application consists of conducting forecasts based on the following formula:
+Y^t+1|t =𝛼Yt+(11𝛼)Y^t|t−1
+know more
+A practical problem with the method implementation is its initialization, that is, the determination of Y^t|t−1 when t =1. This is because at t = 0 there are no observations, which makes Y^1|0.
+
+It is agreed in the literature to consider Y^1|0=Y1, that is, that the forecast for the instant t = 1 is equal to the first observation of the series. Note that this hypothesis corresponds to considering that the prediction for t = 2, at the origin t = 1, is also equal to Y1:
+
+Y^t+1|t=𝛼Yt+𝛼(1−𝛼)Yt−1+𝛼(1−𝛼)2Yt−2+...
+An interesting question is the reason for the method name. Why is it called exponential damping? The explanation is as follows: It is possible to write the exponential smoothing prediction function from a weighted sum of past observations. And the weights of this weighted sum are exponentially decreasing, as below.
+
+Y^t+1|t=𝛼Yt+𝛼(1−𝛼)Yt−1+𝛼(1−𝛼)2Yt−2+...
+Demonstration:
+First, let's recall the formula that expresses Y^t+1|t as a function of Y^t|t−1:
+
+Y ^_(t+1|t) =𝛼Y_t+(11𝛼)Y ^_(t|t−1) (1)
+Next, let's rewrite the formula for Y^t|t-1 (which is a function of Y^t−1|t−2 ):
+
+Y ^_(t|t−1) =𝛼Y_(t−1)+(11𝛼)Y ^_(t−1|t−2) (2)
+Substituting formula (2) into formula (1), we have:
+
+Y ^_(t+1|t) =𝛼Y_t+(1−𝛼)[𝛼Y_(t−1)+(1−𝛼) Y ^_(t−1|t−2)]
+Or yet:
+
+Y ^_(t+1|t) =𝛼Y_t+𝛼(1−𝛼) Y_(t−1)+(1−𝛼)^2 Y ^_(t−1|t−2) (3)
+Now rewrite formula (1) for Y^t−1|t−2 (which is a function of Y^t−2|t−3 ):
+
+Y ^_(t−1|t−2)=𝛼Y_(t−1)+(11𝛼)Y ^_(t−2|t−3) (4)
+Replacing (4) in (3):
+
+Y ^_(t+1|t) =𝛼Y_t+𝛼(1−𝛼) Y_(t−1)+〖𝛼(1−𝛼)〗^2 Y_(t−2)+(1−𝛼)^3 Y ^_(t−2|t−3).
+
+Continuing the process, the next terms to appear in the above formula will be, respectively, α1-α)3Yt-3, 𝛼1−𝛼4Yt−4, and thus we will arrive at the desired formula.
+
+As a final observation, there are three points about terminology:
+
+
+Code in R for Exponential Damping (with damping constant = 0.8):
+
+  
+lines(validation,lty=3)plot(fit,main
+
+= "Predictions x Last 12 Months Observed Values")# plots predictions with 80% and 95% confidence intervals.fit
+
+<- ses(training, h = 12, alpha
+
+= 0.8) # applies the method to obtain predictions up to 12 steps ahead (horizon), α = 0.8.validacao
+
+<- window(series, start=c(2019, 1)) training <- window(series, end
+
+=c(2018, 12)) # defining the training and validation periods: series <- ts(data, start=c(2000, 1), end
+
+=c(2019.12), frequency=12)data
+
+<- read.table("clipboard") # give control
+
++c in Excel to copy the series to the clipboard # I worked with the series in figure 1.3 from class 1 (serie1.txt).library(forecast) # loads the R prediction library.
+The result was as follows:
+
+Note that the method does not fare as well over the 12-month horizon, illustrating the fact that it is suitable for very short-term forecasts (1 step ahead). As we progress through the study, we will see methods suitable for driving longer-term forecasts.
+
+Regarding the determination of the damping constant, this point will be taken up later in this class.
+2.4 - Forecasts for k Steps Ahead (k>1)
+In general, as already mentioned, we are interested not only in a specific forecast, but in a set of forecasts for a given horizon h: t+1, t+2, ..., t+h.
+
+How to make predictions for more than one step ahead?
+
+For the 2-step-ahead forecast, just use the 1-step-ahead forecast in place of yt+1, and then apply the forecast formula for t+2, as if the origin were at t+1.
+
+For the 3-step-ahead forecast, use the 1-step and 2-step-ahead forecasts in place of yt+1 and yt+2, respectively, and apply the forecast formula for t+3 as if the origin were at t+2. And so on, up to the limit of the desired forecast horizon.
+
+It is interesting to note that both the naive method and the exponential smoothing method always provide constant predictions, whatever k, ie: Y^t+1|t = Y^t+2|t= Y^t+3|t …
+
+2.5 - Forecast Validation
+ An important question to be answered is: Which method provided the best predictions?
+
+The immediate answer is: Whoever was less wrong in relation to the observed values. This leads to the need to define an additional concept: that of forecast error.
+
+2.5.1 - Forecast Error
+The prediction error k steps ahead is defined as follows:
+e_(t+k|t)=Y ^_(t+k|t)−Y_(t+k)
+where Y^t+k|t is the prediction for time t+k from the origin t (that is, the prediction k steps ahead) and Yt+k is the value actually observed at time t+k.
+
+Comment
+The problem is that we do not know the observations for time t+k, since we only have observations up to time t. Hence the need to separate some observations from the series to validate the predictions made. The next subsection introduces this concept.
+
+2.5.2 - Validation Period (Ex-Post)
+To check the quality of the predictions made, and thus validate the method adopted so that it can be used for future (or ex-ante) predictions, the recommended procedure is to separate a piece from the end of the sample, called the validation period (or ex-post ), and calculate the forecast errors for this period. If these errors are not very large, the predictions are validated.
+
+Validation reduces the possibility of “surprises” by extrapolating a model to an unknown future horizon. See the figure below.
+
+Illustration of the Validation Period, Avoiding Surprises in Ex-Ante Forecasts.
+e_(t+k|t)=Y ^_(t+k|t)−Y_(t+k)
+where Y^t+k|t is the prediction for time t+k from the origin t (that is, the prediction k steps ahead) and Yt+k is the value actually observed at time t+k.
+
+Comment
+The problem is that we do not know the observations for time t+k, since we only have observations up to time t. Hence the need to separate some observations from the series to validate the predictions made. The next subsection introduces this concept.
+
+2.5.2 - Validation Period (Ex-Post)
+To check the quality of the predictions made, and thus validate the method adopted so that it can be used for future (or ex-ante) predictions, the recommended procedure is to separate a piece from the end of the sample, called the validation period (or ex-post ), and calculate the forecast errors for this period. If these errors are not very large, the predictions are validated.
+
+Validation reduces the possibility of “surprises” by extrapolating a model to an unknown future horizon. See the figure below.
+
+Illustration of the Validation Period, Avoiding Surprises in Ex-Ante Forecasts.
+
+2.6 - Determining Method Parameters
+Parameters such as the L window size (in the moving average method) or the value of α (in the exponential smoothing method) can be determined from criteria based on accuracy measures, in which case it is recommended to consider the entire series for the calculation of the measurements.
+
+The most common measure for this application is the RMSE. The following is the programming code in R to determine the alpha in the case of exponential smoothing.
+
+Code in R for Exponential Damping (including the determination of α):
+
+  
+fit <- ses(training, h=12) # without imposing the alpha value.
+
+ 
+
+# displays estimated damping constant, predictions, RMSE, MAE, MAPE, etc.
+
+summary(fit)
+
+# the series is the same as the previous example:
+
+alpha = 0.3882 # note that this is quite different from the assumed value in section 2.3, which was 0.8.
+
+ 
+
+# plots predictions with 80% and 95% confidence intervals.
+
+plot(fit,main= \"Predictions x Observed Values ​​in the Last 12 Months\")
+
+lines(validation,lty=3)
+
+The result was as follows:
+Although the method is inadequate for long-term forecasts, it can be noted that the set of forecasts has improved, approaching the average of the series in the ex-post period.
+
+What do you attribute this improvement in the result?
+
+2.7 - Series Forecast with Trend: Holt Method
+The exponential smoothing method is usually suitable for series without trend and seasonality. However, when these components are present, the method can be adapted. In these cases, the series is decomposed into its components, and, in addition to a damping equation for the level, there are others for trend and - if applicable - for seasonality.
+
+The prediction equation of the Holt method for prediction k steps ahead is as follows:
+
+Y^t+k|t=lt+kbt
+where 𝑙 𝑡 represents the level of the series, which respects the following equation:
+
+lt=𝛼Yt+(1−𝛼)(lt−1+bt−1)
+and e 𝑏𝑡 is the slope, which follows the following equation:
+
+bt=𝛽lt−lt−1+1−𝛽bt−1
+Note that there are now two damping constants: α for the level, and β, for the slope with 0<α<1 and 0<β<1.
+
+Predictions generated by the Holt method show a constant trend (increasing or decreasing) indefinitely into the future. For details, see Hyndman and Athanasopoulos (2018).
+
+Code in R for Holt Method (including parameter determination):
+
+  
+# displays estimated damping constants and corresponding predictions.summary(fit) # applies Holt's method to get predictions up to 7 steps ahead (horizon).fit <- holt(training, h=7) validation <- window (series, start=c(2020, 1)) training <- window(series, end=c(2019, 12)) # defining the training and validation periods: series <- ts(data, start=c(1999,) 12), end=c(2020.7), frequency=12)data <- read.table(\"clipboard\")# control+c in Excel to copy the series to the clipboard (clipboard)library( forecast)
+
+The results were as follows:
+
+  
+Smoothing parameters: # estimated smoothing constants.
+
+alpha = 0.9999 # level damping constant
+
+beta = 0.7231 # slope damping constant
+
+ 
+
+# plots predictions with 80% and 95% confidence intervals.
+
+plot(fit,main= \"Predictions x Observed Values ​​in the Last 7 Months\")
+
+lines(validation,lty=3)
+
+The forecasts provided by the method are presented below:
+The method was wrong, as it did not count on the sudden deceleration of inflation (COVID).
+2.8 - Forecasting Series with Trend and Seasonality: Holt-Winters Method
+
+Holt and Winters (1960) extended Holt's method to incorporate the seasonality component. The Holt-Winters method comprises the forecasting equation and three smoothing equations – one for the lt level, one for the bt slope, and one for the seasonality with the corresponding parameters α,βe
+
+The Holt-Winters method equations for predicting k steps ahead are as follows:
+
+The prediction equation of the Holt method is as follows:
+
+Y ^_(t+k|t)=l_t+〖kb〗_t +s_(t+k−s(i+1))
+where 𝑖 is the integer part of k−1s and lt represents the level of the series, which respects the equation:
+
+l_t=𝛼(Y_t−s_(t−s))+(1−𝛼)(l_(t−1)+b_(t−1))
+The level equation shows a weighted average between the seasonally adjusted observations Yt−st−s and the non-seasonal forecast lt-1+bt-1 for instant 𝑡.
+
+𝑏𝑡 is the slope, which follows the following equation (identical to Holt's method):
+
+b_t=𝛽(l_t−l_(t−1) )+(1−𝛽) b_(t−1)
+Finally, 𝑠𝑡 is the seasonality, whose equation is:
+
+s_t=𝛾(Y_t−l_(t−1)−b_(t−1) )+(1−𝛾) s_(t−s)
+The seasonal equation shows a weighted average between the seasonal component at time t, Yt−lt−1−bt−1 and at t-s (in the case of a monthly series, it is the same month as the previous year).
+
+Tip
+Note that there are now three damping constants: 𝛼 for level, 𝛽 for slope and 𝛾 for seasonality, where 0<𝛼<1 , 0<𝛽<1 and 0<𝛾<1 .
+
+R Code for Holt-Winters Method (including parameter determination):
+
+  
+library(forecast)
+
+ 
+
+# give control+c in Excel to copy the series to the clipboard
+
+ 
+
+data <- read.table(\"clipboard\")
+
+series <- ts(data, start=c(2000, 1), end=c(2019,12), frequency=12)
+
+ 
+
+# defining the training and validation periods:
+
+training <- window(series, end=c(2018, 12))
+
+validation <- window(series, start=c(2019, 1))
+
+ 
+
+fit <- hw(training, h=12)
+
+# applies the Holt-Winters method to get predictions up to 12 steps ahead.
+
+ 
+
+summary(fit)
+
+# displays estimated damping constants and corresponding predictions.
+
+The results were as follows:
+
+  
+Smoothing parameters: # estimated smoothing constants.
+
+  alpha = 0.497 # level damping constant
+
+  beta = 0.007 # slope damping constant
+
+ range = 0.433 # seasonality damping constant
+
+ 
+
+# plots predictions with 80% and 95% confidence intervals.
+
+plot(fit,main= "Predictions x Observed Values ​​in the Last 12 Months")
+
+lines(validation,lty=3)
+
+The result was as follows:
+The version of the Holt-Winters method presented here works with the additive decomposition of the series. There is a multiplicative version, which can be implemented in R by adding the “seasonal” parameter to the hw function, as follows:
+
+  
+fit <- hw(training, h=12, seasonal = "multiplicative")
+To have a basis for comparison, the MAPE - this information is provided by the command summary(fit) -, which is 3.27 for the set of predictions obtained via the additive method, drops to 2.67 in the multiplicative version. In fact, we already found in class 1 that the adequate decomposition for this series is multiplicative, since the seasonal amplitude varies over time.
+
+If the interest is only in predicting seasonal series, and not in removing seasonality, the SARIMA methodology, to be presented in lecture 10, is possibly the most effective in the time series literature. There is even an analogy of this model with the Holt-Winters method.
+
+For further details about the issues covered in this chapter, it is recommended BROCKWELL & DAVIS (2009) and MORETIN & TOLOI (2004).
+
+Activities
+1 -
+
+Consider the following time series: {Y1=20, Y2 = 35, Y3 = 15, Y4 = 10}. The prediction for t = 6 from a moving average with window size 3 originating from t = 4 is:
+
+a) 5.33
+b) 10
+c) 11.67
+d) 15 TRUE 
+e) 20
+
+Y^5|4=35+15+103=20.
+
+Y^6|4=20+15+103=15.
+
+A company wants to forecast its sales. The table below shows sales data for one of its products in the first four months of 2020:
+
+Month
+
+Sales
+
+January
+
+25,000
+
+February
+
+20,000
+
+March
+
+9,000
+
+April
+
+11,000
+
+The forecast for May, based on the exponential damping method with a damping constant of 0.2, expressed in thousand units, is:
+
+a) 10
+b) 18
+c) 19  TRUE 
+d) 20
+e) 21
+
+Applying the formula:
+
+ Y ̂_(2|1)=αY_1+(1iα)Y ̂_(1|0)=αY_1+(1iα)Y_1 〖=Y〗_1 = 25.
+
+Y ̂_(3|2)=αY_2+(1-α) Y ̂_(2|1)=0.2*20+0.8*25=24.
+
+Y ̂_(4|3)=αY_3+(1-α) Y ̂_(3|2)=0.2*9+0.8*24=21.
+
+Y ̂_(4|3)=αY_3+(1-α) Y ̂_(3|2)=0.2*11+0.8*21=19.
+
+- A time series analyst defines a validation period of size 4. The observations for this period are 7, 5, 6 and 3, and the predictions, obtained with the training sample, were, respectively, 10, 1, 6 and 3. The root mean square prediction error was:
+
+a) 2
+b) 2.5
+c) 3
+d) 3.5
+e) 4
+
+
+Option b -
+
+The RMSE is the square root of:
+
+((10-7)2 +(1-5)2+(6-6)2+(3-3)2)/4 = 25/4
+
+That is, 5/2 = 2.5.
