@@ -1,0 +1,218 @@
+pt6 
+Autocorrelation and partial autocorrelation functions
+Presentation
+In this class, we will present the dependency structures of time series models, called autocorrelation function and partial autocorrelation function. Then, these functions will be calculated for each of the theoretical time series models of the ARMA class defined in the previous chapters, defining characteristic patterns of each model.
+
+Goals
+Examine the concepts of autocorrelation function (FAC) and partial autocorrelation function (FACP);
+Analyze theoretical FAC patterns for each model of the ARMA class;
+Identify theoretical FACP patterns for each model of the ARMA class.
+6.1 - Autocovariance Function
+We saw in class 3 that a (weakly) stationary model satisfies the following properties:
+E(Yt) = μ, ∀t = 1,2,...,T (constant mean)V(Yt) = δ2, ∀t = 1,2,...,T(constant variance)Cov(Yt, Yt-k) = γk (Cov is a function of k only!) ∀ t = 1,2,...,T
+In particular, covariance is constant over time, but varies with k. This means that Cov(Y3,Y2) = Cov(Y2,Y1) (both denoted by γ1) but, for example, Cov(Y3,Y1) ≠Cov(Y2,Y1).
+
+ In this case (that is, if the model is stationary), γk = Cov(Yt,Yt-k) is called the Autocovariance Function (FACV) of Yt, set to k = 0, 1, 2... (the name has the same justification for the case of an autoregressive model: It basically represents the covariance of the series with itself, lagged). Note also that: γ0 = Cov(Yt,Yt) = V(Yt), that is, it is the variance of the series.
+
+Each k value that we set γk to is called a lag, or lag. This term is quite common in time series literature. It will be frequent, therefore, to refer to γk as an autocovariance function of lag k.
+
+We've set aside some examples for you.
+
+Example 6.1 - Let a model A be such that: Cov(Yt,Yt-k) = (2t)k and a model B such that Cov(Yt,Yt-k) = (1/2)k+1. Which of these models has a valid autocovariance function and what is its value at lag 2?
+
+Solution: Model B, in which Cov(Yt,Yt-k) does not depend on t. For this case,γ 2 = (1/2)3 = 0.125.
+6.2 - Autocorrelation Function
+The correlation between two random variables X and Y is defined as follows:
+ρXY=CorrX,Y=CovX,YVXVY.
+Thus, it is immediate to define the autocorrelation function of a time series as follows:
+
+ρk=CorrYt,Yt−k=CovYt,Yt−kVYtVYt−k
+Since the model is stationary (remember that this is a premise for the autocovariance function - and therefore also the autocorrelation function - to be valid), we have that V(Yt ) = V(Yt-k), and so on :
+
+ρk=Cov(Yt,Yt−k)V(Yt)V(Yt)=Cov(Yt,Yt−k)V(Yt)=γkγ0.
+The FAC, like the FACV, is also defined for lags k = 0, 1, 2..., where p0 = 1.
+
+Let's see some more examples?
+
+Example 6.2 - Obtain the lag k autocorrelation function for the model in the previous example.
+
+
+Solution: γ0 = (1/2)0+1 = (1/2)1 = 1/2. Thus, ρk = (1/2)k+1/1/2 = (1/2)k.
+
+Example 6.3 - Check that the autocovariance function satisfies the following properties: γ-k=γk; k≤γ0.
+Solution: By the covariance property: Cov(X,Y) = Cov(Y,X), we have that: k = Cov(Yt,Yt-k) = Cov(Yt-k,Yt) = γ-k. Finally, consider the correlation property: | k| ≤1. Since γ k = γk/ γ 0, we have that: |AAAk/γ0| £1, and so: |k|  |γ0|, but since 0 is the variance: |0| =  and |k| |γ0|.
+
+6.3 - FACV and FAC for the AR model
+Starting with AR(1), first remembering the model equation:
+Yt =Φ0+ Φ1Yt−1+εt.
+The FACV of the AR(1) is:
+
+Yt=CovYt,Yt−1=Cov (Φ1+Yt−1+εt,Yt−1).
+Using the covariance property: Cov(X+Y+W,Z) = Cov(X,Z) + Cov(Y,Z) + Cov(W,Z), we have:
+
+Covϕ0+ϕ1Yt−1+εt,Yt−1=ϕ1CovYt−1,Yt−1=ϕ1VYt−1=ϕ1 V(Yt )=ϕ1 γ0.
+Thus, for the AR(1) model, the FACV at lag 1 is: γ1=Cov(Yt,Yt-1) = ϕ1 γ0.
+
+Calculating now for lag 2:
+
+γ2=CovYt,Yt−2=
+Covϕ0+ϕ1Yt−1+εt,Yt−2
+=ϕ1CovYt−1,Yt−2=ϕγ1=ϕ12γ0.
+γ3=CovYt,Yt−3=
+Covϕ0+ϕ1Yt−1+εt,Yt−3
+=ϕ1Cov(Yt−1,Yt−3)=ϕ1γ2=ϕ13γ0.
+Thus, for the AR(1) model, the FACV at lag 1 is: γ1=Cov(Yt,Yt-1) = ϕ1 γ0.
+
+ 
+
+Calculating now for lag 2:
+
+ 
+
+And so on, until we get to the general formula:
+
+γk=ϕ1γk−1=ϕ1kγ0.
+But γ0=VYt=σ21−ϕ12 , as we saw in class 5, and so the FACV of the AR(1) model is:
+γk=ϕ1k1−ϕ12σ2, k = 0, 1, 2...
+The FAC of the AR(1) is:
+
+ρk=γkγ0=ϕ1k, k = 1, 2...
+The FAC of an AR(1) model has an exponential decay if ϕ1>0, and is a damped sinusoid if ϕ1<0. See some examples.
+
+Example 6.4 - Theoretical FAC of an AR(1) model with ϕ1^ = 0.8 is presented below:
+The FAC of an AR(p) model also has this pattern.
+
+6.4 - FACV and FAC for the MA model
+Click the button above.
+Starting with MA(1), first remembering the model equation: Yt = εt - θ1εt-1.
+
+The FACV of the MA(1) is:
+
+γ1=Cov(Yt,Yt−1)=
+Covεt−θ1εt−1,εt−1−θ1εt−2=
+−θ1Covεt−1,εt−1=−θ1Vεt−1
+=−θ1Vεt=−θ1σ2.
+γ2=Cov(Yt,Yt−2)=
+Covεt−θ1εt−1,εt−2−θ1εt−3=0.
+γ3=Cov(Yt,Yt−2)=
+Cov(εt−θ1εt−1,εt−3−θ1εt−4)=0.
+And so on. It is easy to see that γk=0, , k = 2, 3..., since Cov(εt,εt-k)=0 for all k≠0.
+
+Thus, the FACV of the MA(1) is:
+
+γk=−θ1σ2, k=1.
+=0.k=2.3...
+where the conclusion for k = 2, 3... comes from the fact that white noise is uncorrelated.
+
+To get the FAC, we need to remember that 𝛾0=VYt=(1+𝜃12)𝜎2, as we saw in lesson 5.
+
+ "So the FACV of the model "the MA(1) is:
+
+ρ1=γ1γ0=−θ1σ2(1+θ12)σ2=−θ1(1+θ12).
+ρk=0, k=2,3, ...
+
+Thus, the FAC of MA(1) is finite. We say it is “truncated” at lag 1.
+
+Example 6.6 - Theoretical FAC of a MA(1) model with 𝜃_1= 0.6 is presented below:
+Example 6.7 - The theoretical FAC of a MA(1) model with 𝜃1>=-0.9 is shown below:
+Let's now calculate the FACV of the MA(2). Remembering the model equation:
+
+Yt=εt-θ1εt-1-θ2εt-2.
+The FACV is calculated below. Starting with lag 1:
+
+γ1=Cov(Yt,Yt−1)=
+Covεt−θ1εt−1−θ2εt−2,εt−1−θ1εt−2−θ2εt−3=
+−θ1Covεt−1,εt−1+θ1θ2Covεt−2,εt−2=
+=(−θ1θ2−θ1) σ2.
+At lag 2:
+
+γ2=Cov(Yt,Yt−2)=
+Covεt−θ1εt−1−θ2εt−2,εt−2−θ1εt−3−θ2εt−4=
+−θ2Cov(εt−2,εt−2)=−θ2σ2.
+It's easy to see that γ0=0 for k =3.4...
+
+Thus, the FACV of the MA(2) is:
+
+γk=θ1θ2−1,k=1
+=−θ2, k=2
+=0.k=3.4,...
+To obtain the FAC, it is necessary to remember that, in the case of the MA(2), we have from class 5 that:
+
+γ0=VYt=(1+θ12+θ22)σ2.
+Thus, the FAC of the MA(2) is (the σ2 in the numerator and denominator is canceled):
+
+ρk=θ1θ2−11+θ12+θ22, k=1
+=−θ21+θ12+θ22, k=2
+=0, k=3, 4, …
+
+So we have that the MA(2) FAC is truncated at lag 2.
+
+Example 6.8 - Theoretical FAC of an MA(2) model is presented below:
+This result can be generalized to an MA(q) model: the FAC of an MA(q) is “truncated” at lag q, for any q = 1, 2, 3, ...
+
+6.5 - The partial autocorrelation function
+The FACP Partial Autocorrelation Function is the partial correlation between Yt and Yt-k, that is, it is the correlation between Yt and Yt-k, after discounting the influence of Yt-1, Yt-2, ..., Yt -k+1.
+
+Notation: ϕkk.
+
+Obs1 − by definition: 11 = 1.
+Obs2 − in the AR(p) model, pp =ϕp.
+In the MA(q) model, the FACP behaves like the FAC of an AR model (exponential decay or damped sinusoid).
+
+ 
+Example 6.9 - The theoretical FACP of an MA(1) model is presented below:
+Note that the pattern of the FACP for the AR (truncation in lag p) is analogous to what happened with the FAC of MA(q), in this case, in lag q. These results will be used for identification in class 7.
+
+Example 6.11 - Theoretical FACP of an AR(1) model with ϕ1=0.5 is shown below:
+
+Example 6.12 - Theoretical FACP of an AR(2) model is presented below:
+
+It can be noted that, in the latter case, the FACP is “truncated” at lag 2.
+
+ Note also that, in example 6.11, the FACP is “truncated” at lag 1. The difference is only in the sign of the FACP at lag 1, which is positive.
+
+ It is noteworthy that, in the case of FAC, however, there is also a difference in the decay structure, which would be exponential in the first case and of the damped sinusoid type, in the second case.
+
+ 
+Finally, if we have an ARMA(p,q) model, with p and q different from zero, we will observe a mixture of the patterns studied in this class.
+
+The table below summarizes the FAC and FACP standards expected for the theoretical models.
+
+In class 7 we will see the application of these results to the modeling of a real series, in particular, to the identification of the p and q orders of the adequate model to represent the series.
+
+Activities
+1 - Consider the model:
+Yt=εt-0.5εt-1
+
+The FAC value at lag 1 is:
+
+a) 0
+b) 0.2
+c) 0.4
+d) 0.5
+e) Lack of information to determine.
+ç. -
+0.5/(1+0.52) = 0.5/1.25 = 0.4.
+
+2 - One model presents the following theoretical FACP.
+Its FAC is known to have an exponential decay. The corresponding model is a:
+
+a) AR(1)
+b) AR(2)
+c) MA(1)
+d) MA(2)
+e) WEAPON(1,1)
+
+
+Option b -
+An AR(p) model has FACP truncated at lag p. The FACP is truncated at lag 2, standard for an AR(2) model.
+Regarding the ARIMA models by Box and Jenkins, tick the correct statement:
+
+a) Let the AR(1):Yt=ϕYt-1+εt model be stationary. The autocovariance function of this model is: 𝜑k(1−𝜑)2𝜎2, k = 0, 1, 2, ...
+b) The autocorrelation function (FAC) of an AR(p) model is truncated at lag p.
+c) The partial autocorrelation function (FACP) of a MA(q) model is truncated at lag q.
+d) The AR(2):Yt=ϕYt-1+ϕ2Yt-2 +εt,εt~NID(0,σ2) model is stationary if, and only if, |ϕ1|<1 and |ϕ2|<1, but it is invertible for any values ​​of ϕ1 and ϕ2.
+e) Let the model be: Yt=ϕYt-1+εt -θεt-1, εt~NID(0,σ2). This model is invertible if and only if θ<1 , and is stationary if and only if θ<1 ,
+
+
+Option e - The alternative is the only correct one, presenting the stationarity and invertibility conditions of the ARMA(1,1) model.
