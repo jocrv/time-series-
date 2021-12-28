@@ -1,0 +1,214 @@
+p7 
+Identification of a time series model
+Presentation
+In this class, we will present the procedure for identifying a time series model, based on the estimates of the autocorrelation and partial autocorrelation functions obtained from observations of the series.
+
+From the comparison between these estimates and the respective theoretical standards corresponding to each model - studied in class 6 - it is possible to identify the orders of a preliminary model for the series, as the initial stage of modeling.
+
+Goals
+Estimate the autocorrelation function (FAC) from the data;
+Estimate the partial autocorrelation function (FACP) from the data;
+Identify an initial model for the series, based on FAC and FACP estimates.
+Box and Jenkins' methodology
+The methodology proposed by Box and Jenkins for analyzing a time series basically consists of four sequential steps:
+
+Identification
+
+estimation
+
+Diagnosis
+
+Diagnosis
+
+Each of these stages will be studied in this and the next classes, but it is important to be clear that, in some cases, there may be a need to return to the initial stage.
+
+Example
+If in the diagnosis phase it is proven that the chosen model is inadequate, you can go back to the identification stage and restart the entire process.
+
+The identification is not intended to define the final model to represent the series. If so, there would be no need for the other modeling steps. The objective is only to define the values ​​of p and q that, initially, are adequate for modeling the series.
+
+Initially because, according to the authors of the method, this diagnosis is usually very parsimonious, that is, it leads to an underspecified model, smaller than the true model for the series.
+
+The identification of the order of the model will be based on the following results, obtained in class 6:
+
+The FAC of an MA(q) is “truncated” at lag q, for any q = 1, 2, 3, ...
+The FACP of an AR(p) is “truncated” at lag p, for any p = 1, 2, 3, ...
+Thus, by comparing the FAC and FACP estimates with the above standards, it will be possible to deduce whether we have an AR, MA or an ARMA model and, from the inspection of the lag in which the "truncation" occurs, what is the value of p and q which, in principle, seems appropriate.
+
+The table below recalls the FAC and FACP standards expected for the theoretical models.
+If we observe truncation in both functions, then we should be looking at an ARMA model with p and q nonzero. It should be noted, however, that in this case the identification may not be so evident, since, as stated at the end of class 6, an ARMA structure corresponds to a mixture of AR and MA patterns; therefore, the truncation will be “masked” by a sinusoidal or exponential decay structure.
+FACV and FAC for MA model
+For each lag k, the sample correlation between Yt and Yt-k is calculated, as follows:
+
+ρ^k=∑t=k+1TYt-YYt-k-Y∑t=1TYt-Y2,k=0, 1, 2, ...
+where Y is the sample mean of the series.
+
+Let's exercise?
+
+Example 7.1 - Consider a time series with the following observations: Y1 = 8, Y2 = 4, Y3 = 6, Y4 = 4 and Y5 = 8. Estimate the autocorrelation function.
+
+Solution:
+
+At lag k = 0, always: p0^=1.
+
+At lag 1:
+
+p^1=∑t=25Yt-YYt-k-Y∑Tt=1Yt-Y2=
+
+Y2-YY1-Y+Y3-YY2-Y+Y4-YY3-Y+Y5-YY4-YY1-Y2+Y1-Y2+Y3-Y2+Y4-Y2+Y5-Y2=
+
+-22+0-2+-20+2-222+-22+02+-22+22=-4+0+0+-44+4+0+4+4=-816=-12
+
+In lags 2, 3 and 4:
+
+p^2=∑t=35Yt-Y)Yt-k-Y∑Tt=1Yt-Y2=
+
+Y3-YY1-Y+Y4-YY2-Y+Y5-YY3-YY1-Y2+Y2-Y2+Y3-Y2+Y4-Y2+Y5-Y2=
+
+6-6)(8-6+4-6(4-6)+8-66-68-62+4-62+6-62+4-62+8-62=
+
+02+-2-2+2022+-22+02+-22+22=0+4+04+4+0+4+4=416=14.
+
+p^3=∑t=45Yt-Y)Yt-k-Y∑Tt=1Yt-Y2=
+
+Y4-YY1-Y+Y5-YY2-YY1-Y2+(Y2-Y)2+Y3-Y2+Y4-Y2+Y5-Y2=
+
+4-6)8-6+8-6(4-68-62+4-62+6-62+4-62+8-62=
+
+-22+2-222+-22+02+-22+22=-4+-44+4+0+4+4=-816=-12.
+
+ρ^4=Y5-YY1-X(Y1-Y2+Y2-Y2+Y3-Y2+Y4-Y2+(Y5-Y2=
+
+8-68-68-62+4-62+6-62+4-62+8-62=
+
+(2)(2)22+-22+02+(-2)2+22=44+4+0+4+4=416=14.
+
+Thus, the estimated FAC is:
+
+p^0=1
+
+p^1=-12
+
+p^2=14
+
+p^3=-12
+
+ρ^4=14
+
+Note that it is only possible to walk to lag 4, since the series has only five observations. It also loses k observations when calculating the estimate for each lag. Technically, this number k of missing observations is called degrees of freedom.
+
+It is undesirable to lose degrees of freedom, but what matters is that this number is small in relation to the number of observations in the series. Series of practical interest will be much larger in size than the example, and that won't be a problem.
+
+For example, in a series with 300 observations, if we want to estimate the FAC up to lag 30 (which is usually more than enough) we will have a maximum loss of 30 degrees of freedom, leaving 300-30 = 270 degrees of freedom for the computation of p^30.
+7.3 - FACP Estimation
+The fact that, in AR(p), Φpp=ϕ is used. Thus, Φ^pp=φ^p.
+
+The procedure for estimating the FACP consists of adjusting AR models of different orders, from p = 1 to the desired k order, and, for each k, taking, as an estimate of Φk, the estimate of the coefficient Φk of the Yt-k term of the AR (k).
+
+For example, initially an AR(1) is estimated. Let's say the result was:
+
+Yt=0.4+0.6Yt-1
+In this case, Φ^11=φ^1=0.6.
+
+Then, an AR(2) is estimated. Suppose the result was:
+
+Yt=0.2 + 0.5Yt-1+0.3Yt-2
+Hence, Φ^22=φ⏜2=0.3.
+
+An AR(3) is then estimated, with the result:
+
+Yt=0.3 + 0.4Yt1+0.5Yt2+0.1Yt3
+So, Φ^33=φ⏜3=0.1.
+
+And so on, up to the maximum number of lags for which you want to estimate the FACP. It is important to note that it is not enough to estimate an AR(k) and consider its coefficients. For each lag of interest, it is necessary to estimate an AR(k) and consider only its last coefficient as an estimate of Φ^kk.
+
+Thus, if we want, for example, the FACP for 30 lags, it is necessary to estimate 30 AR models. Lucky for us, R quickly performs this task for us. The command is ggtsdisplay(serie).
+
+7.4 - Identification of p and q orders of an ARMA model
+The FAC of an MA(q) is truncated at q. The FACP of an AR(p) is truncated to p. The FAC and FACP of an ARMA(p,q) exhibit a mixture of the above behaviors. Thus, the procedure suggested by Box and Jenkins for identifying the p and q orders of a time series model is:
+
+From the series to be analyzed, the FAC is estimated and the graph of the FAC and the sample FACP is obtained.
+
+If the FAC is truncated at lag q, then we identify a component MA(q) in the series.
+If the FACP is truncated at lag p, then we identify an AR(p) component in the series.
+FAC and FACP of an ARMA(p,q) show a mixture of the above patterns.
+
+Example 7.2 - Let the following FAC be estimated for a time series.
+This FAC shows exponential decay. The dotted lines in blue represent the 95% confidence interval limits. When identifying an exponential decay, we are only considering what occurs outside these limits.
+
+The explanation comes from the theory of hypothesis testing in statistical models, in which a parameter is said to be non-significant (at the usual 0.05 level) if its estimate falls within the 95% confidence interval for the respective parameter. In this way, what happens within the confidence limits is considered statistically non-significant (that is, for practical purposes, such values ​​are equal to zero).
+
+If FAC values ​​within the confidence interval were considered, we would identify a decay according to a damped sine wave rather than an exponential one (which, however, would not affect the order of the identified model).
+
+The formula to obtain the confidence interval for each ρj in the FAC is presented below:
+
+IC1000(1-α)%(ρj)=ρ^j∓zα2V^ρ^j,
+where V^ρ^≅1T , contains zero, for each j = 1, 2, ... (this formula for the variance is an approximation, called Bartlett's formula).
+
+Example 7.2 (cont.) - Suppose now that the FACP is:
+As the FACP is truncated at lag 1, an AR(1) is identified. Be careful not to get confused with lags. The function plotted by R starts from lag zero, where it trivially assumes value 1. The value at lag 1 is therefore given by the second toothpick, not the first, in the figure above.
+
+Example 7.3 - Let the following FAC and FACP be estimated for a time series.
+As the FAC is truncated at lag 1 and the FACP decays according to a damped sinusoid, an MA(1) is identified.
+
+Example 7.4 - Let the following FACs and FACPs be estimated for a time series.
+Here we have a doubt between the truncation at lag 1 or 2, which would lead us, respectively, to a MA(1) or MA(2) model. What to do in this case?
+
+According to Box and Jenkins, the identification procedure is usually excessively parsimonious, that is, it tends to underidentify the orders p and q of the model. It will be necessary to use a complementary procedure called overfixation test, to be presented in class 8, which basically consists of sequentially estimating higher order models.
+Thus, it is more appropriate to use parsimony when choosing the identified model, which will only be an initial candidate, thus choosing the MA(1).
+
+Note that if we chose MA(2), we would not give MA(1) a chance in the overidentification process. Otherwise, choosing MA(1) as the initial model, one of the superfixed models to be tested will be exactly MA(2) (the other will be ARMA(1,1)).
+
+Overfixation tests will be detailed in class 8, but it is important to keep in mind right away that the identification step is not definitive and that it should be complemented by these tests. Before that, however, we'll talk about parameter estimation, at the beginning of class 8.
+
+Activities
+1. The following autocorrelation and partial autocorrelation functions
+lead to the identification of a model:
+
+a) AR(1)
+b) MA(1)
+c) AR(2)
+d) MA(2)
+e) WEAPON(1,1).
+
+A. An AR(p) model has FACP truncated at lag p. The FACP is truncated at lag 1, standard for an AR(1) model.
+
+The estimated autocorrelation function is shown below:
+
+
+leads to the identification of a model:
+
+a) AR(1)
+b) MA(1)
+c) AR(4)
+d) MA(4)
+e) AR, whose order it is not possible to determine.
+E. The model that presents FAC decaying as a damped sinusoid is the AR. To identify the order, it would be necessary to know the FACP, which is not given.
+
+3. Consider the following estimated AR(1) model: Yt=0.6Yt-1+εt.
+
+About this model, consider the following statements:
+
+I. The estimated FACP at lag 1 is equal to 0.6
+
+II. The estimated FACP at lag 2 is equal to 0.36
+
+III. The estimated FACP at lag 1 is not possible to determine with the given information
+
+IV. The estimated FACP at lag 2 is not possible to determine with the given information
+
+Only the following statements are true:
+
+a) Only the III
+b) I and II
+c) I and IV
+d) II and III
+e) III and IV
+
+C .Assertion I is correct because the coefficient of an AR(1) corresponds to its FACP.
+
+The fact that I is correct makes III false.
+
+Statement IV is correct, which makes statement II false.
+
+Note that the theoretical FACP is truncated at lag 1, which would make the IV false, but we are referring to the estimated FACP, about which it is not possible to know anything from the information provided in the statement.
