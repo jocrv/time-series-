@@ -1,0 +1,361 @@
+pt 8 
+Estimation and diagnostic tests
+Presentation
+In this class, we will present the estimation methods of ARMA models, as well as tests to diagnose, from residuals, whether a given model is or is not suitable to represent a series.
+
+These are the second and third stages of the methodology proposed by Box and Jenkins, subsequent to identification and prior to the prediction stage.
+
+Goals
+Estimate an ARMA model by maximum likelihood or method of moments;
+Analyze the model's residuals, verifying its suitability for a time series;
+Analyze a series in practice, with all the necessary steps to define, estimate and diagnose the appropriate model to represent a real series.
+8.1 - Estimation by maximum likelihood
+The general method for estimating Box and Jenkins models is the maximum likelihood. This method consists of obtaining the value of the parameters that make the model more “compatible” with the observed sample. This function, in the case of a simple random sample, in which the random variables are independent and identically distributed, is given by:
+Lθ=fY1,Y2,...,Yn=∏i=1nf(Yi),
+where θ is the vector of parameters of interest.
+
+In general terms, this function represents the probability that the observed sample Y1,Y2,...,Yn is selected, as a function of the unknown parameters, stored in θ. When we determine the value of θ that maximizes L(θ), we obtain the values ​​of the parameters that make maximum the probability of observing that sample actually observed. It is, therefore, an approach of unquestionable elegance, from the statistical point of view.
+
+The application of this method to time series models has a specific character: As there is no independence, the likelihood function needs to be written as a function of conditional (or predictive) densities: f(Yt|Yt→1Yt→2,…). This is because, if the variables are not independent, f(Y1,Y2,...,Yn)=≠∏i=1nf(Yi), and yes:
+
+f(Y1,Y2,...,Yn)=fYn|Y1,Y2,...,Yn−1fYn−1|Y1,Y2,...,Yn−2…fY2|Y1fY1
+In the case of a time series model, in which, except for the trivial case of white noise, the variables will present a time-dependent structure, we will have:
+
+L(θ) = fYn|Y1,Y2,...,Yn−1fYn−1|Y1,Y2,...,Yn−2...fY2|Y1fY1,
+where θ is a parameter vector containing θ1,θ2,... θp,θ1,θ2,...θp and σ2. The maximization of the above function is done by numerical methods.
+
+8.2 - Estimation by the method of moments
+It's another way to get parameter estimates from simple ARMA models. It consists of using the theoretical expressions of the FAC, which are functions of the model's coefficients, replacing the correlation estimates in these formulas, and solving for the coefficients.
+
+Example 8.1 - The estimated FAC for a time series is presented below:
+Knowing that the estimated FACP is truncated at lag 1 and the model mean is zero, identify the appropriate model and estimate it using the method of moments.
+
+Solution: As the FAC decays exponentially and the FACP is truncated at lag 1 (that is, it presents a statistically significant value at lag 1 and non-significant values ​​for lags k = 2, 3, ...), an AR is identified(1 ). As the mean is zero, we have that θ0=0, and thus the model equation is: Yt = Yt=θYt-1+ε.
+
+On the other hand, it is known that the autocorrelation function of the AR(1) model is:
+
+ρk=ϕk,k=0, 1, 2, ...
+
+For k = 1, we have: ρ1=ϕ.
+
+In this way, the estimation by the method of moments is trivial, just equaling:
+
+θ^=p^1
+
+It is concluded that θ^=0.63, and the final estimated model is: yt=063yt1+εt..
+
+Example 8.2 - The correlogram of a series is truncated at lag 1, with p^1=-0.4. Identify the suitable model for this series and estimate it using the method of moments.
+
+Let's practice?
+
+Solution: Using the identification procedure presented in class 7, we see that it is a MA(1):Yt=εt-θ1εt-1 model. In this way, we have to solve the equation:
+
+ρ1=−θ(1+θ2)= −0.4
+
+To θ. So:
+
+−θ=−0.4 1+θ2
+
+θ=0.4+0.4θ2
+
+0.4θ2−θ+0.4=0
+
+θ=−−1−12−40.40.420.4
+
+=11−0.640.8=10.360.8=1±0.60.8
+
+So we have two roots:
+
+θ=1+0.60.8=2andθ=1-0.60.8=0.5
+
+As θ=2 leads to a non-invertible model, we have that the solution is θ=0.5 and the final estimated model is Yt=εt-0.5εt-1.
+
+8.3 - Statistical significance tests
+The significance tests of the coefficients of an estimated model are based on Student's t distribution with n-(p+q) degrees of freedom. The hypotheses are:
+
+H0 (null hypothesis): the coefficient is not significant.
+H1 (alternative hypothesis): the coefficient is significant.
+know more
+This test can be conducted based on the p-value calculated for the parameter estimate, provided by R for the set of model parameters estimated through the coeftest command. The test procedure is very simple: if the p-value is less than 0.05, the null hypothesis that the coefficient is not significant is rejected, concluding by its significance. Here we consider the most usual significance level of a test, which is 0.05.
+
+Significance tests of the AR(2) model identified above, in R
+library(lmtest) # load the library containing the following coeftest function
+
+ 
+
+fit1 <- Arima(training,order = c(2,0,0))
+
+ 
+
+coeftest(fit1) # shows the significance of the estimates
+
+                  Estimate Std. Error z value Pr(>|z|)
+
+ar1 0.295787 0.062258 4.7510 2.025e-06 ***
+
+ar2 0.269755 0.062206 4.3365 1.448e-05 ***
+
+intercept 0.090290 0.287114 0.3145 0.7532
+
+---
+
+Significance codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ 
+
+fit2 <- Arima(training,order = c(2,0,0),include.constant = F) # remove the non-significant θ0
+
+The output of the "coeftest" function is:
+
+        Estimate Std. Error z value Pr(>|z|)
+
+ar1 0.318959 0.063842 4.9961 5.850e-07 ***
+
+ar2 0.253023 0.063990 3.9541 7.682e-05 ***
+
+The model equation is: Yt = 0.3189Yt-1 + 0.2530Yt-2. However, as mentioned in lecture 7, this is not necessarily the final model, since the identification procedure tends to underidentify the model, that is, lead to p and/or q values ​​that are smaller than the real ones.
+The identified and estimated model (in the previous example, the AR(2)) is only a starting point, from which overfixation tests will be conducted.
+
+Such tests consist of estimating, in addition to the identified model, models with additions of one unit in p, in q and in both, and evaluating the significance of the statistical estimate of the incidental parameter(s), generally at the level of 0.05 significance in each case.
+
+For example, if an AR(1) was initially identified, that is, p = 1 eq = 0, a model with p = 2 eq = 0 must be estimated, in addition to this model, that is, an AR(2) , a model with p = 1 eq = 1, that is, an ARMA(1,1), and a model with p = 2 eq = 1, that is, an ARMA(2,1). In other words, we must test the significance of the estimates of parameters ϕ1 and/or θ1.
+
+The next step is to verify, for each superfixed model, whether the estimate of the parameter(s) introduced is significant. One of the following situations will then occur (from 1 to 6) below:
+
+1 - Both are non-significant, even when specified together. In this case, the model initially identified (in the example, AR(1)) is chosen as the final model.
+
+2 - If only ϕ2 is significant, we have the AR(2) model as a candidate for the final model. It must then be compared to the initial model (we'll see how in section 8.5 and, in case it comes out the winner, the overfixation procedure must continue from there, that is, an AR(3), an ARMA(2,1) must be tested and an ARMA(3,2) and repeating the procedure, until the incidental parameters of all models superimposed in a step are non-significant.
+
+3 - If only θ1 is significant, we have the ARMA(1,1) model as a candidate for the final model. It must then be compared to the initial model (we'll see how in section 8.5) and, if it comes out the winner, the overfixation procedure must continue, that is, we must test an ARMA(2.1), an ARMA(1,2) and a ARMA(2,2) and repeat the procedure until the incidental parameters of all models superimposed in a step are non-significant.
+4 - If both ϕ2 and θ1 are significant only when specified separately, we have an AR(2) and an ARMA(1,1) as candidates for the final model. We must then compare these models with the initial model (we'll see how in section 8.5) and, unless the initial model wins, we restart our identification procedure from the new model.
+
+5 - If both ϕ2 and θ1 are significant only when specified together, the ARMA(2,1) is compared with the initial model and, in case it wins, we restart the identification procedure from it, testing an ARMA(3 ,1), one ARMA(2,2) and one ARMA(3,2).
+
+6 - If both ϕ2 and θ1 are significant, both singly and jointly, the three corresponding models (AR(2), ARMA(1,1) and ARMA(2,1)) are compared with the AR(1 model) ) initial (we'll see how in section 8.5) and, unless the initial model wins, we restart the identification process from the new model.
+
+
+Overfixation tests for the AR(2) model identified in example 8.3, in R
+fit3<-Arima(Y,order = c(3,0,0), include.constant=F) # overfixing the AR part
+
+ 
+
+coeftest(fit3) # The results are:
+
+          Estimate Std. Error z value Pr(>|z|)
+
+ar1 0.290602 0.064607 4.4980 6.861e-06 ***
+
+ar2 0.263847 0.065197 4.0469 5.189e-05 ***
+
+ar3 0.020932 0.065035 0.3219 0.7476
+
+ 
+
+Thus, it appears that the term AR(3) was not significant (p-value = 0.7476).
+
+fit4<-Arima(Y,order = (2,0,1), include.constant=F) # overfixing the MA part
+
+coeftest(fit4)
+The results of the above commands are:
+
+          Estimate Std. Error z value Pr(>|z|)
+
+ar1 0.40245 0.25520 1.5770 0.11479
+
+ar2 0.22654 0.12405 1.8262 0.06782 .
+
+ma1 -0.11440 0.26349 -0.4342 0.66418
+
+ 
+
+Thus, it appears that the term MA(1) was not significant (p-value = 0.6642).
+
+When both parameters were introduced simultaneously, the resulting model (ARMA(3,1)) was also non-significant. Thus, we return to the previously identified model and conclude that the final model is AR(2), stored in fit2.
+
+See the example we've separated for you.
+
+Example 8.4 - Consider the identification procedure from the estimated FAC, shown below, and the FACP, which is not shown, but is known to be characterized by an exponential decay. Write down the initial model and the necessary overfixation tests.
+
+Figure 8.3 - FAC estimated for the time series of example 8.4
+Solution: As the FAC is truncated at lag 2, and given the characteristic of the FACP, an MA(2) is identified. As p = 0 and q = 2, the first overfixation tests should be conducted for models with p = 1 and q = 2, that is, an ARMA(1,2), with p = 0 andq = 3, that is, a MA(3), and with p = 1 and q = 3, that is, an ARMA(1,3).
+
+An open question is: How to compare models in the overfixation process? At first, it would be enough to look at the sum of squares of the residuals (choosing the smallest). The winning model remains in contention. But the comparison between models with different numbers of parameters is not so simple, and will be the object of study below.
+
+8.5 - Information Criteria
+The identification procedure presented above was shown in a simplified way. In practice, when superfixing an AR(1) to an ARMA(1,1), even if the parameter θ1 is significant, it does not necessarily conclude that the ARMA(1,1) is superior. It is a fact that a model with more parameters (in this case, ARMA(1,1)) tends to provide a better fit.
+
+Comment
+Thus, if we compare these models via the SQR or the likelihood function, it is certain that ARMA(1,1) will come out the winner. However, it is also a fact that a good model must be parsimonious, that is, explain well the behavior of a series using the fewest possible parameters. In this way, we are led to use information criteria, which serve to compare models with different number of parameters.
+
+The usual information criteria are:
+
+AIC =lnσ^2+p+q2T
+
+Schwarz or Bayesian criterion: BIC or SBC = lnσ^2+p+qlnTT.
+
+where σ^2= ∑t=1Tε^t2T is the mean of the squares of the residuals.
+know more
+Generally speaking, they compute an increasing function of the sum of squares of the residuals and the number of parameters. So we want the resulting value to be as small as possible. The second installment penalizes by the number of parameters. Note that this penalty is more severe in the BIC, for T ≥ 8 (since ln(8) > 2). The BIC is therefore more parsimonious than the AIC.
+
+See the example we've separated for you.
+
+Example 8.5 - Consider that in the first example we presented in this class, the incidental parameter in the AR part was significant, while the one in the MA part was not. When specified in isolation, in an ARMA(1,3), the resulting model was not significant. In this way, we would have the MA(2) and ARMA(1,2) models as possible candidates, before continuing the process. Suppose now that these models had the following values ​​for the information criteria:
+
+ 
+
+AIC
+
+BIC
+
+MA(2)
+
+568
+
+493
+
+WEAPON(1,2)
+
+615
+
+577
+
+ 
+
+As both criteria point to MA(2), we conclude that this is the final model. Note that, in this case, it is not necessary to continue the process, since the superfixed models corresponding to MA(2) had already been tested (among them, ARMA(1,2) itself).
+
+Once the model is defined, it is necessary to carry out the diagnostic tests. This is because, if the model is not “approved” in the residual analysis, the process must be aborted and the modeling start must be returned. It is essential that the model residues are “well behaved”.
+
+Getting the Information Criteria for the AR(2) model estimated in example 8.3, in R
+
+summary(fit2)
+
+The results are presented below.
+
+sigma^2 estimated at 3,807:
+log likelihood=-475.09
+AIC=956.19 BIC=966.48
+
+Note that the information criteria only make sense when comparing models. The AIC and BIC values ​​above, therefore, are not interpreted in absolute terms.
+8.6 - Diagnoses
+Once a model has been identified and estimated, we must verify if the residuals have the expected properties for them. That is, if they behave like white noise.
+
+Remembering the properties of white noise:
+E(εt )=0, ∀tV(εt )=σ2, ∀tCorr(εi,εj )=0, ∀t≢j.
+The most important step is to detect the possibility of autocorrelation. If the residuals show some pattern of time dependence, the model is invalidated and, in this case, an alternative must be sought based on the identification procedure (that is, we return to step 1).
+identification 
+estimation 
+diagnostic
+forecast
+
+In this way, it must be verified whether the residues are uncorrelated as white noise, that is, if:
+
+ρ1=ρ2=…=0l
+where ρj is the autocorrelation of lag j of the residuals. One possibility is to check whether the IC for ρj:
+
+IC100(1-α)%(ρj)=ρ^j±zα2V⏞ρ^j,
+where V⏞ρ^j≅1T contains zero, for each j = 1.2...
+
+Comment
+A problem with this approach is that (multi)collinearity can lead to wrong conclusions about the significance of individual tests, which have low power.
+
+The recommended alternative is the Ljung-Box test, which investigates the joint significance of the estimated autocorrelations.
+
+Denoting by ρj the autocorrelation of lag j of the series of residuals, the test hypotheses are:
+
+H0: ρ1 = ρ2 = ρ3 ... = ρK = 0.
+
+H1: at least one ρj (j = 1, 2, ..., K) ρ 0.
+
+where K is a sufficiently large value. For non-seasonal series, k between 10 and 20 is usually sufficient. For seasonal series it is important to consider 2 or 3 seasonal lags. If we are talking about a monthly series with annual seasonality, K between 30 and 40 is appropriate.
+
+Ljung-Box test statistics:
+
+0=nn+2∑j=1Kρ^j2(n-)
+Under H0, Q~X2K-(p+q). For example, for AR(p): Q~X2K-p
+
+Ljung-Box test on R, for the AR(2) model defined for the series of example 8.3, on R:
+tsdiag(fit) # The result is shown in the following figure.
+know more
+The blue dotted line on the third graph represents the 0.05 threshold for the p-value. All p-values ​​are greater than 0.05, so the hypothesis of errors following white noise is not rejected.
+
+Also important is the detection of deviations from normality, which can be detected using a residual graph called QQ-plot. It is a graph of percentiles of the standardized residuals distribution and the standard Normal distribution.
+
+The “ideal” format of a QQ-Plot is that of a 45º straight line, as shown below
+
+:
+Figure 8.6 - “Ideal” QQ-PLot. - Source: Author
+
+A Normality check can also be used. The most common for residuals from time series models is the Jarque-Bera test, whose hypotheses are:
+
+H0: Normal errors;
+H1: Non-Normal errors.
+JB's test statistic is:
+
+JB=n6a2+(k-3)24.
+Where a and k are the estimators of the skewness and kurtosis coefficients: a=∑i=1n(εi^-ε^)3nS3k=∑i=1n(εi^-ε^)4nS4
+
+Under H0, JB follows a chi-square distribution with 2 degrees of freedom. As in the case of significance tests, it is usual to make the decision based on the p-value. Thus, if the p-value of the test is less than 0.05, the Normality hypothesis is rejected. Note that, both in the normality test and in the absence of autocorrelation test, what is wanted is to obtain high p-values, greater than 0.05.
+
+QQ-Plot and Normality Test for model residuals from example 8.3, in R
+To get the model residuals, just use the symbol $ after fit2, which is the object that contains the final model defined for the series.
+
+qqnorm(fit2$residuals) # the QQ-plot itself
+qqline(fit2$residuals) # 45th line
+The result is shown below.
+
+Figure 8.7 - QQ-Plot for the residuals of the model defined for the series of example 8.3 - Source: Author
+
+The commands for applying the Jarque-Bera Test are presented below:
+
+library(tseries) # contains the test function
+jarque.bera.test(fit$residuals)
+The result is shown below.
+
+Results:
+X-squared = 0.43329, df = 2, p-value = 0.8052
+
+The p-value is greater than 0.05, and thus the hypothesis that model errors follow a Normal distribution at this significance level is not rejected.
+
+Activity
+The investigation of the number of students who enter higher education each month follows an AR(1) model. The sample FAC of the analyzed data presents the following values ​​for the first five lags:
+
+k 1 2 3 4 5
+ρk 0.50 0.25 0.125 0.0625 0.03125
+The estimation of the parameter ϕ by the method of moments is:
+
+a) 0.05
+b) 0.25
+c) 0.4
+d) 0.5
+e) 0.75
+
+d. The FAC of lag 1 is equal to the coefficient itself. Equating the estimates, the answer is 0.5.
+
+An MA(1) model was identified for a time series. The initial overfixation tests are conducted based on the estimation of the models:
+
+a) AR(1) and MA(1)
+b) AR(1) and MA(2)
+c) MA(2) and WEAP(1,1)
+d) MA(2) and ARMA(1,2)
+e) AR(1) and WEAPON(1,1)
+
+ç. Overfixation corresponds to increasing p from 0 to 1 (ARMA(1,1)) and q from 1 to 2 (MA(2)).
+
+One of the most important steps in the analysis of a time series is the residual analysis, in particular the Ljung-Box test, whose statistic is:
+
+Q=nn+2∑j=1Kρ^j2(n-j)
+where K is an arbitrary number
+
+.
+When analyzing the residuals of a time series model, we come across the following graphs:
+
+
+Check the correct alternative.
+
+a) As practically all autocorrelation values ​​are within the confidence interval, the model is valid regardless of the number K of terms in the Ljung-Box statistic.
+b) Since most p-values ​​are above the 0.05 line, then the model is valid regardless of the number K of terms computed in the Ljung-Box statistic.
+c) Since most p-values ​​are above the 0.05 line, then the model is not valid, regardless of the number K of terms computed in the Ljung-Box statistic.
+d) The model is not valid if a maximum of K = 4 terms are considered in the Ljung-Box statistic.
+e) The model is only valid if we consider at most K = 4 terms in the Ljung-Box statistic.
+
+d. If four terms are considered, the p-value is less than 0.05, which leads to the rejection of the null hypothesis of the mentioned test, that is, the hypothesis that the model is valid, at the 0.05 significance level, is rejected.
