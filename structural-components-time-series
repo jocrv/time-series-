@@ -1,0 +1,324 @@
+time series
+Lesson 1: Time series and their structural components
+Presentation
+In this class, the basic concepts related to time series are presented. In addition, its unobservable or structural components are defined (trend, seasonality, cycle and irregular) and methods are presented to remove trend and seasonally deseasonalize a series.
+Goals
+Identify the structural components of a time series;
+Apply methods to extract deterministic trend from a series;
+Understand the concept and motivation for conducting a seasonal adjustment.
+Definition and Main Characteristics of a Time Series
+A time series can be defined as a set of time-indexed observations: {y1, y2, ..., yT}. An example of a time series is shown in the following figure:
+Figure 1.1 - Monthly indebtedness of the Brazilian government, expressed as a proportion of GDP, between November 2001 and May 2019
+A caution when representing a time series concerns the representation of the origin. The change in scale may make the debt growth at the end of the series look larger. The following figure illustrates this fact well, simply changing the Y-axis scale to 0.5 to 1 (instead of 0 to 1, as in the previous figure).
+Figure 1.2 - Same series as in figure 1.1, with a change in the Y-axis scale
+The convention for working with a time series is always to use a scale that includes the origin, thus enabling a clearer reference.
+
+When analyzing a time series, the first aspects to be considered are: the periodicity or frequency and the period covered by the series (
+
+Frequency
+Frequency with which data are observed (monthly, daily, quarterly, annual)
+Period covered by the series
+Initial and final instants, the total span of the period being sometimes called the series range.
+
+In the previous example, the series is monthly and corresponds to the period from November 2001 to May 2019 (211 month range).
+
+In the series presented in the first example, it is possible to notice a “stable” behavior until mid-2014. The behavior of the series until 2014 is consistent with an important property called stationarity, which will be seen in detail later on. However, from 2014 onwards, the series assumes an upward trajectory, that is, an apparent upward trend.
+
+It should be noted that the fact that the series of examples shows growth at the end does not mean that it has a tendency in its structure.
+
+Example
+When we increase the range of the series (for example, until 2024), it is possible that its trajectory is reversed in such a way that, analyzing the series globally, it is possible to identify a reversion to the initial average level.
+
+This type of analysis is not simple and, not by chance, we will leave it for the last part of the course. For now, it is enough to understand that a series may or may not have a tendency in its composition, and that this is decisive for the treatment that the time series will receive.
+
+An example of a trendless series is given in the figure below.
+Figure 1.3 - Time Series Example Without Trend
+Note that the series values ​​oscillate around a horizontal straight line with no slope.
+
+Trend is a very important concept in time series analysis. When the series has a tendency in its composition or structure, we say that it is one of the unobservable components that, hypothetically, constitute or form the series. The other unobservable components of a time series are: seasonality, cycle and irregular. As they represent the structure of the series, it is common to call them structural components as well.
+
+Next, we will define the structural/unobservable components of a time series.
+
+Structural or Unobservable Components
+Trend
+Generally speaking, the trend of a time series is a smooth path around which the series oscillates. At first, let's say that a series has a trend when it shows a persistent upward or downward movement. This movement is often clear and thus its identification is quite simple, as in the following figure.
+Figure 1.4 - Monthly IPCA between January 2000 and April 2019 (base: Dec/1999 = 100)
+This chart presents the broad consumer price index (IPCA), used as a reference for calculating inflation in Brazil, with monthly frequency and a range of 19 years and 4 months.
+
+It can be seen that the series oscillates around a straight line, represented in the graph for easy visualization. However, the definition of trend as a “smooth trajectory around which the series oscillates” does not impose that this trajectory is necessarily a straight line, as it occurs in this figure. It can be, for example, an exponential curve (if the growth of the series were more accentuated), or even a curve that follows the main upward and downward movements of the series, but with smaller amplitude oscillations.
+
+Strictly, therefore, the trend does not even need to be a persistent bullish or bearish move, it can fluctuate. However, as already mentioned, approaching this topic more rigorously is complicated and, therefore, left to the last part of the course. For now, it is enough to understand the concept of trend in its simplest form. In fact, until the 1970s, this was exactly how the concept of trend was understood, its estimation being carried out by a method taken from regression analysis.
+This technique will be studied further on, but it is worth mentioning that the treatment of trends was one of the areas that recently evolved the most in the analysis of time series and that, for this reason, this subject will be taken up in the last classes of the course.
+
+seasonality
+Seasonality is the periodic repetition of a behavior, usually annual (in English, season = season of the year). Temperature series and other series directly affected by it - such as the sale of ice cream or air conditioners - are very obvious examples. Another example is the increase in retail sales at the end of the year, due to Christmas (the level of employment also increases, which makes the unemployment series seasonal).
+
+An example of a seasonal series is shown in the figure below.
+Figure 1.5 - Sales of printing and writing paper (in thousands of French francs) between January 1963 and December 1972.
+The series above represents the number of sales of the printing and writing paper industry (in thousands of French francs) from January 1963 to December 1972. There is a seasonal pattern with a strong drop in the month of July due to the European summer and school holidays.
+
+The seasonal period s is dependent on the frequency of the series. In the case of annual seasonality:
+
+s = 12 if the series is monthly
+
+s = 4 if the series is quarterly
+
+s = 365, if the series is daily
+
+Seasonal periods shorter than 1 year can be defined. For example, weekly seasonality for data with daily frequency.
+
+Example
+In the series of COVID-19 records in Brazil throughout 2020 or a series of prices in the financial market. In this case, s = 7. However, the most common definition of seasonality, and which is even responsible for its nomenclature (season), refers to an annual periodic repetition.
+
+Cycle
+Cycles are periodic repetitions with periods longer than 1 year. The cyclical component is rarely identified in a time series, except in series related to climatic phenomena (rainfall cycles, for example), political (electoral cycles) and some others with very specific characteristics.
+
+However, the origin of the cyclic component in a time series may also be an error in the specification of other structural components in the series. For example, until the 70s, due to the mistreatment of the trend component, spurious cycles (= misleading, which actually do not exist) were frequently identified in time series, notably in economic series. In this way, models of trend-cycle decomposition and mistaken definitions of economic cycles emerged, for example. Once again, we will come back to this subject in the last classes of the course.
+Figure 1.6 - Annual number of lynx traps in Canada, between 1821 and 1934
+The hunting period for lynx seems cyclic, with periodic repetitions around 10 years.
+
+Irregular component
+It is what “left over” of the series after extracting the previous components, that is, the uncertainty component, which makes the series present a residual behavior that could not be explained by the trend, seasonality and cycle. It has the same properties as the error component of a linear regression model: zero mean, constant variance, no correlation. Also called error or white noise component.
+
+Finally, it should be noted that a series can contain (and in general it does) more than one unobservable component in its composition. An example is shown in the figure below, in which it is possible to clearly identify the presence of trends and seasonality.
+These components, therefore, coexist in this time series. In this case, it is interesting to recover each of the components individually, that is, to decompose the series. For this, it will be necessary to use a decomposition model.
+
+Structural Decomposition Models
+These are the models that seek to decompose the series into unobservable components that supposedly generated the observed values. Let's disregard the existence of cycles.
+
+Additive Decomposition Model
+Describe the series from the sum of its components:
+Yt = Tt + St + εt, t = 1, 2, ..., T.
+
+It is applicable when seasonality is independent of the trend, that is, its pattern does not change over time.
+
+Multiplicative Decomposition Model
+Describe the series from the product of its components:
+
+Yt = TtStεt, t = 1, 2, ..., T.
+
+Useful if seasonality is trend dependent, with seasonal amplitudes varying over time.
+
+The following figure shows a series whose decomposition model is multiplicative:
+Figure 1.7 - Passengers on flights in Brazil between January 2000 and February 2020.
+Decomposition of a Time Series in R
+library(dygraphs) # Install the dygraphs library, which allows you to do the structural decomposition.
+
+  
+library(dygraphs) # Install the dygraphs library, which allows you to do the structural decomposition.
+
+
+
+# Then copy (“control+c”) the series from Excel (values ​​only, no header, and using # period, not comma, as decimal separator). Then run the commands in R:
+
+
+
+series <- read.table("clipboard")
+
+# read table from clipboard
+
+
+
+series <- ts(series, start = c(2000,1), end = c(2020,2), frequency=12)
+
+# indicates to R that the imported data is a time series (ts = time series), month and # start year (January 2000), end month and year (February 2020) and
+seasonal period = 12)
+
+
+
+decomp.ad = decompose(series)
+
+plot(decomp.ad)
+
+# decomposes the series according to the additive model
+
+
+
+decomp.mult = decompose(series, type="multiplicative")
+
+plot(decomp.mult)
+
+# decomposes the series according to the multiplicative model
+
+Applying the multiplicative decomposition to the series in figure 1.7, the following result is obtained:
+Removing the Trend from a Time Series
+Simply put, a trend can be represented as a deterministic function of time, the most common being: Tt = β0 + β1t (deterministic means: math, perfect, no random term).
+
+Estimation of a Deterministic Trend
+To estimate this type of trend, we can write the series as a linear regression model, in which the dependent variable is the value of the series in t, Yt, and the explanatory variable is t:
+
+Yt = Tt + εt = β0 + β1t + εt.
+Note that the model above assumes that there are only two components in the series structure: trend and irregular, and that trend is a linear function of time. We will gradually relax these hypotheses throughout the course, but for now they are very illustrative.
+
+The usual technique to estimate the parameters of a linear regression model, in this case, β0 and β1, is called least squares. This method consists in obtaining the values ​​of these coefficients that make the sum of the squares of the errors (εt = Yt - β0 + β1t) assume the smallest possible value. The reason we work with the sum of the squares of the errors is that, if we add the errors without squaring them, we can have large positive and negative errors that offset each other, minimizing the sum without necessarily being a good fit. When squaring, both negative and positive errors have a positive sign and, therefore, the smaller their magnitude, the smaller the sum of squares of the errors will also be.
+
+Without going into further details about the method, we present below the commands in R to remove a deterministic bias using the method of ordinary least squares.
+
+Removing a deterministic trend in R
+
+First copy (“control+c”) an Excel table, constituted in such a way that its first column is the series in Figure 1.4 and the second column is the series of index t (which assumes the value 1 for the first observation, 2 for the second, etc.), remembering that you must use a period, not a comma, as a decimal separator). Then run the commands in R:
+data <- read.table("clipboard")
+
+# as a regression will be carried out, it is not necessary to inform R that it is a time series # nor to define the seasonal period
+
+series <- data[,1]
+
+# stores the first column of “data” in “series”
+
+
+
+month <- data[,2]
+
+# stores the second column of “data” in “mes”
+
+
+
+model <- lm(formula = series ~ month)
+
+# performs serial regression in month
+
+Applying now the model$coefficients command, you will get the result:
+
+  
+Coefficients:
+
+(Intercept) month
+
+84.7007 0.9891t
+
+Where “intercept” is the estimate of β0 and “month” is the estimate of β1. The estimate of the trend component is, therefore, τ^𝒕 = 84.7007 + 0.9891t (this is a growing trend). The trendless series can be obtained by doing: 𝑌𝑡−τ^𝑡, or by executing the following command in R: model$residuals.
+It is worth mentioning again that the study of trends in time series has evolved a lot in the last 50 years, and thus it was discovered that a series rarely presents a trend as simple as the example above. This type of trend was then called deterministic (since it is a deterministic function of time), and much study was devoted to the identification of stochastic trends in time series. This subject, however, will only be dealt with at the end of the course, as it involves more elaborate concepts that will be detailed in the following classes. For now, let's stick with the notion of deterministic bias.
+
+Another method used to remove the bias of a time series is the calculation of its difference, ie: 𝑌𝑡−𝑌𝑡−1. In the last classes of the course, a comparison will be made between the two methods.
+
+the game market
+As well as the games and consoles themselves, there is also an informal market for these products and, for each officially licensed item, we can estimate that there is a similar one being produced and sold informally, which, although not contributing financially to the games industry, ends up for keeping the culture of games present in society, ultimately benefiting the field of digital games.
+
+Finally, we can distinguish a third game market, composed of people who constitute professional activities based on their relationship with games.
+Cyberathletes, or professional game players, represent one of these groups and today the esports market is booming, with teams and tournaments awarded for different games. There are also players who start streaming their game content or even tutorials on YouTube or Twitch, often gaining millions of followers, earning a living thanks to ads or contributions from fans. Currently, it's common for game developers to rely more on promoting their games on YouTube gamer channels than on traditional media. Finally, we can mention the journalists who cover the gaming market in newspapers and websites, forming another relevant group in society.
+
+It is interesting that most of these new spaces started out in an amateur way, but quickly became professional and, although they are not linked to the sale of games themselves, they move huge amounts of money and help to keep the culture of games increasingly present in society .
+
+seasonal adjustment
+If the series has a seasonal component, it may be appropriate to remove this component before addressing the trend issue. This will occur whenever the objective is to analyze the long-term behavior of the series, without the impact of variations that concern only its seasonal pattern. For example, to analyze the trend of the unemployment rate in Brazil, it is useless to consider the expected declines in December. Seasonal movements can interfere with a clear view of the long-term trajectory of the series.
+Thus, there is often an interest in isolating the seasonal component of the series and removing it (by subtraction or division, depending on the decomposition adopted). The act of removing the seasonal component from the series is called seasonal adjustment (or seasonal adjustment).
+
+Seasonal Adjustment using "Dummy" Variables
+The simplest form of seasonal adjustment is to create a set of binary variables (dummies), each representing a month (in the case of monthly series and annual seasonality):
+
+X1 = 1, if January, 0 otherwise
+
+X2 = 1, if February, 0 otherwise
+
+...
+
+X11 = 1 if November, 0 otherwise
+
+The remaining month (in the example December) is taken as a reference. Then, a linear regression model is estimated, in which the 11 dummies allow specifying 12 models:
+
+For month j, j = 1, 2, ..., 11: Yt = β0 + βjXj + εt;
+
+And, for month 12 (December): Yt = β0 + εt.
+βj is, all else constant, the difference between the value in month j and December. The seasonal component values ​​for each month are called seasonal factors, and are important for identifying seasonal patterns. For example, a series of unemployment will likely have a negative seasonal factor and a high magnitude in the month of December.
+
+Seasonal Adjustment via Dummies in R
+The methodology presented above can be implemented in a way in R. This is because the program creates the seasonal dummies automatically.
+
+The steps are as follows:
+
+First, copy (“control+c”) the series from Excel (only the values, no header, and using a period, not a comma, as a decimal separator). Then run the commands in R:
+
+  
+series <- read.table("clipboard") # read table from clipboard
+
+
+
+series <- ts(series, start = c(2000,1), end = c(2020,2), frequency=12)
+
+# indicates to R that the imported data is a time series (ts = time series), start month and year (January 2000), end month and year (February 2020) and seasonal period = 12)
+
+
+
+Q <- ordered(cycle(series))
+
+# create the seasonal dummies
+
+
+
+model <- lm(series ~ Q)
+
+# estimates the regression on seasonal dummies
+
+
+
+summary(model) # displays seasonal factors
+
+
+
+Applying the series in Figure 1.7, the following results are obtained:
+
+
+
+ 
+Coefficients:
+
+
+
+(Intercept) 6627501 (seasonal factor for December)
+
+Q^1 291971 (seasonal factor for January)
+
+Q^2 579278 (seasonal factor for February)
+
+Q^3 -552787 (seasonal factor for March)
+
+Q^4 764003 (seasonal factor for April)
+
+Q^5 11093 (seasonal factor for May)
+
+Q^6 220767 (seasonal factor for June)
+
+Q^7 -353221 (seasonal factor for July)
+
+Q^8 431356 (seasonal factor for August)
+
+Q^9 398506 (seasonal factor for September)
+
+Q^10 11714 (seasonal factor for October)
+
+Q^11 -488493 (seasonal factor for November)
+
+
+
+model$residuals # displays the seasonally adjusted series (if there is no trend or cycle)
+Reading
+For further details on the issues dealt with in this chapter, MORETIN & TOLOI (2004) is recommended.
+
+Activities
+1. The following series presents the balance of jobs (hired – fired) in Brazil, according to the Ministry of Labor and Employment, between 1999 and 2019. High-detail 3D first-person shooter (FPS) in PC.
+From the analysis of the graph, it is concluded that the series:
+
+a) presents trend and seasonality.
+b) shows a trend, but does not show seasonality. TRUE 
+c) presents seasonality, but does not present a trend.
+d) does not present a trend or seasonality.
+e) presents annual frequency
+
+Seasonal variations are quite clear, with annual frequency, as is to be expected for a series of jobs. In addition, the series oscillates around a horizontal line, so it does not present a trend. Thus, there is no trend or seasonality.
+Below we reproduce figure 1.7: monthly series of tickets purchased between 2000 and 2019 according to the National Civil Aviation Agency (ANAC).
+By applying additive decomposition, we get the following result:
+Compare the exercise in the section on Decomposition, where multiplicative decomposition was applied. What is the main difference between the results and what explains this difference?
+
+From the analysis of the graph, it is concluded that the series:
+
+a) Seasonality is best estimated as the correct model was used.
+b) The trend is smoother as a more suitable model was used.
+c) The trend is smoother as an inappropriate model was used.
+d) Seasonality was not correctly estimated, as the series has a cycle.
+e) Residuals are much larger, due to model specification error. TRUE 
+
+The magnitude of the residuals is much larger, indicating that the model fit was not good. In fact, as seen in the class, the multiplicative decomposition model is the most suitable for this series, since the seasonal amplitude varies with the trend.
+Search for a time series with seasonality on the internet. Perform additive and multiplicative decomposition and implement the deterministic trend estimation and seasonal adjustment procedures (in this sequence), the latter using dummy variables. Analyze the resulting series, assuming both an additive and a multiplicative model. Which model provided the best results? Is the result compatible with the series chart?
+
+00
+If the seasonal amplitude is constant, the additive model will generate the best results, that is, residuals of smaller magnitude. If the seasonal amplitude varies over time, the multiplicative model will have better adherence to the series.
