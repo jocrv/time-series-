@@ -1,0 +1,383 @@
+p4 
+AR, MA and ARMA models; Stationarity and Invertibility
+Presentation
+We will present the specification of the Box & Jenkins ARMA models, establishing the conditions for stationarity and invertibility of these models.
+
+Goals
+Examine the autoregressive (AR) and moving average (MA) models;
+Investigate the stationarity and invertibility conditions of these models;
+Analyze time series models in a more general class called ARMA.
+4.1 - The lag (or backshift) operator and the characteristic equation
+The lag operator B is such that BYt = Yt-1 (B “lags” Y in a unit of time). See an example.
+
+Example 4.1 - Let the model be: 𝑌𝑡 = 0.8𝑌𝑡−1 + 𝜀𝑡. Write this model in terms of B.
+
+Solution:
+
+𝑌𝑡 = 0.8𝑌𝑡−1 + 𝜀𝑡
+𝑌𝑡 = 0.8B𝑌𝑡 + 𝜀𝑡
+𝑌𝑡 - 0.8B𝑌𝑡 = 𝜀𝑡
+(1,8.8B)𝑌𝑡 = 𝜀𝑡
+
+(1-0.8B) is called the characteristic polynomial of the model.
+
+In example 4.1, the equation (1-0.8B) = 0 is called the model characteristic equation.
+The importance of the characteristic equation is that its solution, or root (that is, the value of B that satisfies it), determines the stationarity condition of a general time series model.
+For example, in the case of AR(1), in particular, the stationarity condition based on the root of the characteristic equation of the model is established below.
+
+The AR(1) model, defined as follows: 𝑌𝑡 = 𝑌𝑡−1 + 𝜀𝑡, is stationary if, and only if, the modulus of the root of its characteristic equation is strictly greater than 1, that is: |B|> 1.
+
+One might ask: but why establish a stationarity condition based on the solution of the characteristic equation given that, in class 3, we had already established this condition by calculating the expected value and the variance, based on the values ​​assumed by the coefficient ϕ ?, in particular, if we saw that, for ϕ<1, the AR(1) model is stationary?
+
+The answer to this question is simple. In fact, in the case of the mentioned model, it was not difficult to deduce the stationarity condition from the values ​​of ϕ. However, for the more complex models that will be studied throughout this class, this deduction would not be trivial.
+
+Comment
+In fact, to arrive at the expected value and variance of more complex models it will be necessary to even use the stationarity of the model as a premise, so it is important to establish a more general condition that does not depend on the expected value and variance. Hence the relevance of the lag operator and the characteristic equation.
+
+See one more example.
+
+Example 4.1 - Check that, in the case of AR(1), the stationarity condition based on the characteristic equation is equivalent to that established in class 3.
+
+Solution:
+
+The characteristic equation is: (1-ϕB) = 0, whose root is: B=1/ϕ.
+
+For |B|>1, we need to have |ϕ|<1.
+
+We conclude that the AR(1) model is stationary if |ϕ|<1.
+
+It should be noted that the introduction of the constant added to the model, that is, its re-specification in the more general format: Yt=ϕ0+ϕ1Yt-1+εt, does not change the stationarity condition.
+4.2 - The autoregressive model of order p (AR(p))
+We can extend the number of series lags in the AR(1) model to define a more general specification. The p-order autoregressive model, or AR(p), is defined as follows:
+Yt=ϕ1Yt-1+ϕ2Yt-2+...+ϕpYt-p+εt,
+
+where where p is called model order (a more general specification includes the added constant ϕ0).
+
+In terms of the lag operator:
+
+Yt=ϕ1BYt+ϕ2B2Yt+...+ϕpBpYt+εt,
+
+Yt-ϕ1BYt-ϕ2B2Yt-...-ϕpBpYt=εt,
+
+Isolating Yt:
+
+10ϕ1B-ϕ2B2-...-ϕpBpYt=εt
+
+In this case, 1sϕ1B-ϕ2B2-...-ϕpBp is the characteristic polynomial.
+
+The characteristic equation of this model is:
+
+1ϕ1B-ϕ2B2-...-ϕpBp=0
+
+Or, equivalently (more usual):
+
+ϕpBp+...+ϕ2B2+ϕ1B-1=0
+
+The stationarity condition of the AR(p) model is established below.
+
+know more
+The AR(p) model is stationary if, and only if, all the roots of its characteristic equation have a modulus greater than 1, that is, Bi>1 , ∀i=1,2,…,p, where 𝐵𝑖 a i -th root.
+If p = 2, one can apply Bhaskara's formula to find the roots of ax2 + bx + c = 0:
+
+x=-b±b2-4ac2a·
+
+Alternatively, one can use the fact that the roots x1 and x2 of a quadratic equation satisfy: x1 + x2 = -b/a and x1x2 = c/a.
+
+Follow the examples that we have separated for you.
+
+Example 4.2 - Check that the following model is stationary:
+𝑌𝑡 = 0.8𝑌𝑡−1 + 0.5𝑌𝑡−2 + 𝜀𝑡.
+
+See the solution.
+
+Solution:
+
+The characteristic equation of the model is:
+
+1 𝑒𝑞𝑢𝐵 − 0.5𝐵2 = 0
+
+Or yet:
+
+0.5𝐵2 + 0.8𝐵 − 1 = 0,
+
+whose roots are: 0.8248 and –2.4228.
+
+Since the modulus of one of the roots is less than 1, the model is not stationary.
+
+Example 4.3 - Check that the following model is stationary:
+
+𝑌𝑡 = 0.3𝑌𝑡−1 + 0.6𝑌𝑡−2 + 𝜀𝑡.
+
+Solution:
+
+The characteristic equation of the model is:
+
+1 𝑒𝑞𝑢𝐵 − 0.6𝐵2 = 0
+
+Or yet:
+
+0.6𝐵2 + 0.3𝐵 − 1 = 0,
+
+whose roots are: 1.065 and –1.565.
+
+whose roots are: 0.8248 and –2.4228.
+
+The modulus of both roots is greater than 1, so the model is stationary.
+
+In the case of an AR(2), an excellent hint is that the stationarity conditions can be represented in terms of ϕ1 and ϕ2 (for the proof, see Box and Jenkins, 1976).
+
+|ϕ2|<1
+ϕ1+ϕ2<1
+ϕ2+ϕ1<1
+
+Note that |ϕ1|<1 and |ϕ2|<1 do not guarantee the stationarity of the AR(2). In particular, |ϕ1|<1 is neither a necessary nor a sufficient condition.
+Heads up
+An important point to note is that the roots of the characteristic equation can be complex. A general way of expressing the stationarity condition is for the roots to be outside the unit circle, as it is written in the more formal time series books. For real roots, the case explored here, the condition is equivalent to the modulus of roots greater than 1.
+
+4.3 - The moving average model (moving average, MA(q))
+Click the button above.
+The moving average model (from English, moving average, MA(q))
+In a moving average model (Moving Average, or MA), Yt is represented as a linear function of current and lagged white noise values. The simplest specification is the 1st-order MA model, or MA(1), and is defined by the following equation:
+
+𝑌𝑡 = 𝜀𝑡 − 𝜃𝜀𝑡−1.
+
+As in the AR model, there may be a constant 𝜃0 in the model, but in the case of MA the inclusion of this constant is less common, although it is possible.
+
+Two aspects are worth mentioning:
+
+Why is the model called moving averages if, according to the definition of moving average, presented in Lesson 1, there is no moving average in the equation above?
+What is the sense of representing the observation of the series at time t, 𝑌𝑡, as a linear combination of white noise at times t and t-1?
+These issues will be addressed in the next section, as we address the property of invertibility. In particular, we will see that, under certain conditions, an MA model can be written as an AR with infinite terms, and this will allow us to answer the above two points.
+
+Just as we did for the AR(1) model, the MA model can be extended to include more lags of white noise. Thus, the MA(q) model is defined as follows:
+
+𝑌𝑡 = 𝜀𝑡 − 𝜃1 𝜀𝑡−1 − 𝜃2 𝜀𝑡−2 − ... − 𝜃𝑞 𝜀𝑡−𝑞.
+
+where q is the order of the model, as is p in the case of the AR model.
+Regarding stationarity, its verification involves calculating the expected value and the variance. These calculations, in the case of the MA model, are quite simple, due to the properties of white noise. These properties are recalled below, for convenience:
+
+𝐸(𝜀𝑡) = 0, ∀𝑡
+𝑉(𝜀𝑡) = 𝜎2, ∀𝑡
+𝐶𝑜𝑟𝑟(𝜀𝑖,𝜀𝑗) = 0, ∀𝑖≠𝑗.
+
+The expected value of the MA(q) model is:
+
+𝐸(𝑌𝑡) = 𝐸(𝜀𝑡 − 𝜃1 𝜀𝑡−1 − 𝜃2 𝜀𝑡−2 − … − 𝜃𝑞 𝜀𝑡−𝑞)
+= 𝐸(𝜀𝑡) − 𝜃1 𝐸(𝜀𝑡−1) − 𝜃2 𝐸(𝜀𝑡−2) − ... − 𝜃𝑞 𝐸(𝜀𝑡−𝑞)
+
+As 𝐸(𝜀𝑡) = 0, ∀𝑡, we have:
+
+𝐸(𝑌𝑡) = 0.
+
+Note that if we include a constant added to the model specification, say 𝜃0, we have 𝐸(𝑌𝑡) = 𝜃0.
+
+However, as already mentioned, the inclusion of this constant is not usual in the case of the MA model, unlike what happens in the case of the AR model. In both cases, however, the expected value does not depend on t, and therefore the model is always stationary on average.
+
+Regarding the variance, we have:
+
+𝑉(𝑌𝑡) = 𝑉(𝜀𝑡 − 𝜃1 𝜀𝑡−1 − 𝜃2 𝜀𝑡−2 − … − 𝜃𝑞 𝜀𝑡−𝑞).
+
+Due to the lack of correlation between the variables (𝐶𝑜𝑟𝑟(𝜀𝑖,𝜀𝑗) = 0, ∀𝑖 ≠ 𝑗), we have:
+
+𝑉(𝑌𝑡) = 𝑉(𝜀𝑡) + 𝜃12 𝑉(𝜀𝑡−1) + 𝜃22 𝑉(𝜀𝑡−2) + … + 𝜃𝑞2 𝑉(𝜀𝑡−𝑞)..
+Using that 𝑉(𝜀𝑡) = 𝜎2, ∀𝑡,
+
+𝑉(𝑌𝑡) = 𝜎2 + 𝜃12𝜎2 + 𝜃22𝜎2 + … + 𝜃𝑞2𝜎2
+
+Putting 𝜎2 in evidence, we have:
+
+𝑉(𝑌𝑡) = (1 + 𝜃12 + 𝜃22 + … + 𝜃𝑞2)𝜎2.
+
+Note that in the case of variance, including the added constant does not change anything, since the variance of a constant is zero. The fact that the variance, as well as the expected value, does not change with time, leads us to an important conclusion about the MA models:
+
+The MA(q) model is always stationary, regardless of the coefficient values.
+
+In time series literature, it is common for the word to always be replaced by “trivially”; that is: “The MA(q) model is trivially stationary” is a valid statement.
+
+In terms of the lag operator, the MA(q) model can be represented as follows:
+
+𝑌𝑡 = 𝜀𝑡 − 𝐵𝜃1 𝜀𝑡 − 𝐵2𝜃2𝜀𝑡 − … − 𝐵𝑞𝜃𝑞𝜀𝑡
+= (1𝑡𝐵𝜃1 − 𝐵2 𝜃2 − ... − 𝐵𝑞𝜃𝑞)𝜀𝑡.
+
+The characteristic equation of this model is:
+
+1𝐵𝜃1 − 𝐵2𝜃2 − ... −𝐵𝑞𝜃𝑞 = 0,
+
+or, as is more usual:
+
+𝐵𝑞𝜃𝑞 + ... + 𝐵2𝜃2 + 𝐵𝜃1 − 1 = 0.
+
+Unlike what happens in the AR model, the solution of the characteristic equation of the MA model does not provide any information about the stationarity of the model, since, as we have seen, this model is always stationary. However, it will give information about another very important property to be investigated in an MA model, the inversibility.
+4.4 - Invertibility
+One of the points raised when presenting the MA model concerns its interpretation. After all, it seems odd to represent a series as a linear combination of current and lagged values ​​of white noise.
+
+The explanation for this fact is that, under certain conditions, an MA model can be written as an AR with infinite terms. In this case, it is called invertible. That is, an MA can be seen as a parsimonious specification1 for an AR().
+
+In this case, the MA equation makes it possible to represent an infinite model through an equation with a finite number of parameters.
+
+The following illustrates, as an example, the inversion of an MA(1) model.
+
+Example 4.4 - Invert the MA(1) model below (that is, write it as an AR(∞)):
+
+𝑌𝑡 = 𝜀𝑡 − 0.8𝜀𝑡−1.
+
+Solution:
+
+𝑌𝑡 = 𝜀𝑡 − 0.8𝜀𝑡−1
+
+= 𝜀𝑡 − 0.8B𝜀𝑡
+
+= (1 − 0.8B𝜀𝑡)
+
+⇒11-0.8BYt=εt·
+
+To complete the example, it is necessary to resort to the formula for the sum of a p.g. infinite, with first term a1 and ratio q, such that |q| < 1:
+
+S∞=a11-q·
+
+Inverting the formula of the sum of p.g., identifying that a1 = 1 and q = 0.8B:
+
+11=1B=1+0.8B+0.64B2...
+
+And so:
+
+(1 + 0.8𝐵 + 0.64𝐵2...)𝑌𝑡 = 𝜀𝑡
+𝑌𝑡 + 0.8𝑌𝑡−1 + 0.64𝑌𝑡−2 + ... = 𝜀𝑡
+𝑌𝑡 = −0.8𝑌𝑡−1 − 0.64𝑌𝑡−2 + ... + 𝜀𝑡.
+
+Note, therefore, that the initial MA(1) model was equivalently represented by an AR with p = ∞. However, the weights obey a restriction: they decay at a rate of 0.8 as the observation gets older. In fact, since we started with a model with only one parameter, it would be a real miracle to get an unrestricted model.
+
+know more
+As we increase the order of the original MA, we gain more flexibility in the values ​​that the equivalent AR parameters can take.
+
+However, we will not discuss higher order models in this material, as these, in addition to involving a more complex algebraism than the example above, do not add anything to the understanding of the relevance of the inversibility property, which is basically the objective we needed to achieve.
+
+Note that the example model is invertible because the coefficient 0.8, which is the ratio of p.g. (ignore B), is less than 1 in modulus. In fact, if the coefficient of the MA model were greater than or equal to 1, for example, if the original model were:
+
+𝑌𝑡 = 𝜀𝑡 − 𝜀𝑡−1
+
+or:
+
+𝑌𝑡 = 𝜀𝑡 − 1.4𝜀𝑡−1,
+we would have a non-invertible MA. As in the case of a non-stationary AR, a non-invertible MA model does not make sense, or, formally, it is an inadmissible specification.
+
+The inversibility conditions for MA(q) are exactly the same as the stationarity conditions for AR(p). That is, it is first necessary to calculate the roots of the characteristic equation, presented in section 4.3 and repeated below for convenience:
+
+𝐵𝑞𝜃𝑞 + ... + 𝐵2𝜃2 + 𝐵𝜃1 − 1 = 0.
+
+Then, the following general invertibility condition is applied to an MA(q) model. The MA(q) model is invertible if all roots of its characteristic equation have modulus > 1.
+
+See examples that we've separated for you.
+
+Example 4.5 - Check the above condition for an MA(1) model: 𝑌𝑡 = 𝜀𝑡 − 𝜃𝜀𝑡−1.
+
+Solution - The characteristic equation is: (1-𝜃B) = 0, whose root is: B = 1/𝜃1.
+
+For |B| > 1, we need to have |𝜃| < 1.
+
+Conclusion: The formulated condition is equivalent to |𝜃1| < 1. On the other hand, we already saw in example 4.2 that, in fact, this is exactly the condition on 𝜃 that allows inverting an MA(1) model.
+
+The inversibility conditions of MA(2) can be written in terms of coefficients, by analogy with AR(2), as follows:
+
+|𝜃2| < 1
+𝜃1 + 𝜃2 < 1
+𝜃2 - 𝜃1 < 1
+
+Example 4.6 - Check if the following models are invertible:
+
+a) 𝒀𝒕 = 𝜺𝒕 − 1.4𝜺𝒕−𝟏
+
+b) 𝒀𝒕 = 𝜺𝒕 − 1.4𝜺𝒕−𝟏 + 0.5𝜺𝒕−𝟐
+
+A: a) |𝜃| = 1.4 > 1, so no.
+
+b) |𝜃2| = 0.5 < 1, Ok; 𝜃1 + 𝜃2 = 1.4 + (-0.5) = 0.9 < 1, Ok; 𝜃2 - 𝜃1 = (-0.5) – 1.4 = -1.9 < 1, Ok.
+
+So yes.
+An additional question: In the same way that we investigated stationarity for both models, would it make sense to define the inversibility property for an AR(p) model?
+
+In this case, an AR(p) model would be invertible if it were possible to represent it as an MA(∞).
+
+Comment
+Although it doesn't make much practical sense, no, as an MA(∞) is not very useful, we can talk about this property in the theoretical aspect, to create a symmetry in the analysis of the AR and the MA.
+
+The good news is that there are no conditions to check here. According to a theorem, called “Wold's Decomposition Theorem”, every stationary AR(p) model is invertible, that is, representable as an MA(∞). In the time series literature, it is common to refer to this property of AR models as “trivially invertible”.
+
+It should be noted that some books use the inversibility of AR models to facilitate the derivation of statistical properties for higher-order models, which we will not do here.
+
+The table below shows the admissibility conditions of the models studied so far.
+
+Model Representation Stationarity Inversibility
+AR(1) 𝑌𝑡 = ϕ1 𝑌𝑡−1 + 𝜀𝑡 Always
+AR(2) 𝑌𝑡 = ϕ1 𝑌𝑡−1 + ϕ2 𝑌𝑡−2 + 𝜀𝑡 |ϕ2| < 1
+ϕ1 + ϕ2 < 1
+ϕ2 - ϕ2 < 1 Always
+MA(1) 𝑌𝑡 = 𝜀𝑡 − 𝜃1𝜀𝑡−1 Always |ϕ1| < 1
+MA(2) 𝑌𝑡 = 𝜀𝑡 − 𝜃1𝜀𝑡−1 − 𝜃2𝜀𝑡−2 Always |ϕ2| < 1
+ϕ1 + ϕ2 < 1
+ϕ2 - ϕ2 < 1
+
+4.4 - ARMA Models
+The ARMA model of p and q orders for Yt is specified as follows:
+
+𝑌𝑡 = 𝜑0 + 𝜑1𝑌𝑡−1 + 𝜑2𝑌𝑡−2 + ... + 𝜑𝑝𝑌𝑡−𝑝
++ 𝜀𝑡 − 𝜃1𝜀𝑡−1 − 𝜃2𝜀𝑡−2 − ... − 𝜃𝑞 𝜀𝑡−𝑞.
+
+Note that this is just a joining of the AR and MA equations, keeping the common error term between them.
+
+The stationarity condition of an ARMA(p,q) model is defined by the characteristic equation of the AR part, and the invertibility condition, by the MA part, that is:
+
+The ARMA(p,q) model is stationary if all roots of the characteristic equation of the AR part have modulus > 1.
+The ARMA(p,q) model is invertible if all roots of the characteristic equation of the MA part have modulus > 1.
+
+Activity
+1. Consider the following statements about stationarity and invertibility of models for time series:
+
+The AR(2) model is stationary if and only if both its coefficients are less than 1 in absolute value.
+The MA(1) model is invertible if the root of the characteristic equation is greater than 1.
+The AR(p) model is stationary if and only if all the roots of its characteristic equation have a modulus less than 1.
+The MA(q) model is stationary regardless of its coefficient.
+Only the statements are correct:
+
+a) I, II and IV
+b) I and II
+c) II and III
+d) II and IV
+e) IV
+
+d.
+
+I is false, because the stationarity conditions of the AR(2) are: ϕ2 - ϕ2 < 1, |ϕ2| < 1 and ϕ1 + ϕ2 < 1.
+
+II is correct, this is in fact the inversibility condition of MA(1).
+
+III is false, it would be correct changing “minor” to “larger”.
+
+IV is correct, an MA model is always stationary.
+
+2. To explain the behavior of a series, the following model was estimated: Yt - 0.5Yt-1 - 0.5Yt-2 = 𝜀t – 0.8𝜀t-1 + 0.3𝜀t-2. Check the correct statement.
+
+a) The model is stationary and invertible.
+b) The model is stationary and not invertible.
+c) The model is non-stationary and invertible.
+d) Invertible. The information provided does not allow us to conclude about stationarity.
+e) Stationary. The information provided does not allow us to conclude about invertibility.
+
+ç
+
+Not stationary, since 0.5 + 0.5 = 1, violating the condition that ϕ1 + ϕ2 < 1.
+
+Invertible because |0.3| < 1, 0.8 + (-0.3) = 0.5 < 1 and -0.3 - 0.8 = -1 < 1.
+
+Activity
+3. Consider the AR(2) model 𝑌𝑡 = ϕ1𝑌𝑡−1 + ϕ2𝑌𝑡−2 + 𝜀𝑡. Knowing that the roots of the characteristic equation are B1 = 3 and B2 = -2, the parameters ϕ1 and ϕ2 hold:
+
+a) ϕ1 = -1/3 and ϕ2 = 1/2.
+b) ϕ1 = 1/3 and ϕ2 = -1/2.
+c) ϕ1 = -1/6 and ϕ2 = -1/6.
+d) ϕ1 = 1/6 and ϕ2 = -1/6.
+e) ϕ1 = -1/6 and ϕ2 = 1/6.
+
+e
+
+In the characteristic equation ϕ2B2 + ϕ1B - 1 = 0, the sum of the roots must equal -b/a and their product must equal c/a. Thus, we have: -ϕ1/ϕ2 = 3 + (-2) = 1 and ϕ1ϕ2 = 3 * (-2) = -6, from which the result is easily obtained: ϕ1 = -1/6 and ϕ2 = 1/ 6.
