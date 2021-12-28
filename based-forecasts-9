@@ -1,0 +1,281 @@
+Model-Based Forecasts
+Presentation
+We will present the procedure to conduct time series forecasts from a previously identified, estimated and diagnosed model.
+
+We will show how to obtain, from the model equation, the optimal prediction function, and then we will use this function to generate the point and interval predictions under each model.
+
+Goals
+Analyze the prediction function associated with a time series model;
+Design optimal point forecasts, corresponding to each possible model;
+Determine variance and confidence intervals associated with calculated predictions.
+9.1 - Model Assisted Forecasts
+There are several advantages to considering a previously estimated statistical model. The main one is that the process of obtaining the final model, in particular the estimation of the model, as proposed by Box and Jenkins, guarantees the optimality of the model, that is, that it is the best way to represent the behavior of the series.
+
+know more
+In this sense, using the estimated model means considering an equation that represents, better than any other, the evolution of the time series, in such a way that the corresponding dependency structure, in principle, should lead to the best possible predictions.
+
+When you say “model-assisted”, what you mean is “founded by an underlying statistical model”. The word assisted is usually used because of the English equivalent, model assisted; nevertheless the literal translation may not be adequate.
+
+Anyway, “model assisted” and “model supported” mean the same thing: The use of a statistical model giving robustness to the predictions.
+
+The relevant question becomes: given a previously identified, estimated and diagnosed model, how to obtain the forecasts?
+
+9.2 - Forecast Function Associated with a Model
+In this section, the procedure for obtaining “optimal” forecasts of a time series is presented, based on obtaining a forecast function that meets a certain criterion.
+
+Remembering the concept of prediction function k steps ahead, presented in class 2: It consists of a formula 𝑌 ̂_(𝑡+𝑘|𝑡) to obtain the prediction for time t+k based on available observations up to time t, called the source of the prediction. The relevant question to be asked is: How to obtain the most appropriate prediction function for each model?
+
+The optimality criterion considered is: Minimize the mean squared forecast error.
+
+The mean squared error of prediction is defined as follows:
+
+NDE(Y^t+k|t)=E[(Y^t+k|t-Yt+k)2|Yt,Yt-1,...)
+know more
+That is, it represents the expected difference between the forecast k steps ahead, ̂Yt+k|t, and the actual observation of the series at time t+k, given the information available up to time t, the source of the forecast. The square is used to prevent positive and negative errors from compensating each other.
+
+Remembering the prediction error definition k steps ahead:
+
+et+k|t=Y^t+k|t-Yt+k,
+we realize that the predictive NDE can also be written as: E[(Y^t+k|t-Yt+k)2|Yt,Yt-1,...).
+
+It can be shown that EQM(Y^t+k|t) takes the smallest possible value when:
+
+
+Y^t+k|t=E(Yt+k|Yt,Yt-1,...)
+Thus, given a time series model, the optimal prediction function, according to the criterion defined above, is given by the conditional expected value associated with the model.
+
+9.3 - Forecasts Based on Random Walk without Constant
+This section presents the calculation of the prediction function associated with a simple random walk, that is, one that does not have an added constant: Yt+1=Yt+εt+1.
+
+Starting with the prediction 1 step ahead (k=1). Initially, we write the model for t+1:
+
+Yt+1=Yt+εt+1.
+Then:
+
+Y^t+1|t=E(Yt+k|Yt,Yt-1,...)=E(Yt+εt+1|Yt,Yt-1,...)=E(Yt|Yt, Yt-1,...)=E(εt+1|Yt,Yt-1,...)=Yt+0=Yt
+Comment
+Where, in the transition from the penultimate to the last row, we used the fact that the expected value of Yt, given that we know Yt, is obviously equal to Yt. Furthermore, the expected value of white noise is, by definition, zero for any given instant (in this case, t+1).
+
+Thus, it can be noted that the simple random walk is the model that “assists” (founds) the naive method of prediction. In other words, it is the model underlying that method. As this method is the most adequate to predict prices of financial assets - both empirically and from the point of view of finance theory -, it is common to establish the hypothesis that the prices of these assets follow the random walk.
+
+To obtain k steps ahead predictions, we follow the following procedure:
+
+Yt-1=Yt+εt+1.Yt-2=Yt+1+εt+2=(Yt+εt+1)+εt+2=Yt+εt+1+εt+2.Yt-3=Yt- 2+εt+3=(Yt+εt+1+εt+2)+εt+3=Yt+εt+1+εt+2+εt+3.
+It is possible to see that, if we continue these accounts, we will reach the general form:
+
+NDE(Y^t+k|t)=E[(Y^t+k|t-Yt+k)2|Yt,Yt-1,...)et+k|t=Y^t+k| t-Yt+kYt+k=Yt+∑j=1kεt+j.
+In such a way that the prediction function k steps ahead is:
+
+Y^t+k|t=E(Yt+k|Yt,Yt-1,...) = Yt
+
+That is, for whatever the forecast horizon, the forecast provided by this model will be given by the last observation, also similar to what happened with the naive method.
+
+ 9.4 - Forecasts Based on Random Walk with Constant
+ Click the button above.
+This section presents the calculation of the prediction function associated with a random walk with a constant, that is, one that has an added constant: Yt+1=ϕ0+Yt+εt+1.
+
+Starting with the prediction 1 step ahead (k=1). Initially, we write the model for t+1:
+
+Yt+1=ϕ0+Yt+εt+1
+Then:
+
+Y^t+1|t=E(Yt+k|Yt,Yt-1,...)=E(ϕ0+Yt+εt+1|Yt,Yt-1,...)=E(ϕ0| Yt,Yt-1,...)+E(Yt|Yt,Yt-1,...)+E(εt+1|Yt,Yt-1,...)=ϕ0+Yt+0=ϕ0 +Yt
+To obtain k steps ahead predictions, we follow the following procedure:
+
+Yt+1=ϕ0+Yt+εt+1Yt+2=ϕ0+Yt+1+εt+2=ϕ0+(ϕ0+Yt+εt+1)+εt+2=2ϕ0+Yt+εt+1+εt+2Yt +3=ϕ0+Yt+2+εt+3=ϕ0+(2ϕ0+Yt+εt+1+εt+2)+εt+3=3ϕ0+Yt+εt+1+εt+2+εt+3
+It is possible to see that, if we continue these accounts, we will reach the general form:
+
+Yt+k=kφ0+Yt+∑j=1kεt+j.
+In such a way that the prediction function k steps ahead is:
+
+Y^t+k|t=E(Yt+k|Yt,Yt-1,...)φ0+Yt
+That is, the predictions are given by a straight line, starting from the last observation and with a slope φ0, so they increase (decrease) with the number of steps ahead if φ0 is positive (negative).
+
+Forecasts Based on the AR Model(1)
+This section presents the calculation of the prediction function associated with an autoregressive (AR) model, with a constant, that is, one that has an added constant: Y(t+1)=φ0+φ1Yt+εt+1.
+
+Starting with predictions 1 step ahead. Writing the model for t+1:
+
+Yt+1=ϕ0+Yt+εt+1In t+2:Yt+2=ϕ0+Yt+1+εt+2=ϕ0+ϕ1(ϕ0+ϕ1Yt+εt+1)+εt+2=ϕ0(1+ ϕ1)+ϕ12Yt+ϕ1εt+1+εt+2In t+3:Yt+3=ϕ0+ϕ1Yt+2+εt+3=ϕ0(1+ϕ+ϕ12)+ϕ13Yt+ϕ12εt+1+ϕ1εt+2+εt +3General form:Yt+k=φ0(1+φ0+φ12+...+φ1k-1)+φ1kYt+φ1k-1εt+1+φ1k-2εt+2+...+εt+k
+Thus, the prediction function for k steps ahead of the AR(1) model is:
+
+Y^t+k|t=E(Yt+k|Yt,Yt-1,...) = φ0(1+φ0+φ12+...+φ1k-1)+φ1kYt
+Note now that:
+
+(1+φ0+φ12+...+φ1k-1)
+is the sum of a p.g. with n = k terms, with a1 = 1 and q = φ1.
+
+As already reviewed, sum equals 𝑆𝑛 = 𝑎𝑛 (1−q𝑛 )/1−q = (1−φ1𝑘 )/1− φ1.
+
+Thus, the prediction function for k steps ahead of the AR(1) model can be written as:
+
+Y^t+k|t=φ0(1-φ1k)1-φ1+φ1kYt
+Let's see an example in practice?
+
+Example 9.1 - Consider the AR(1) model: Yt = 40 + 0.6Yt-1 + εt. If Yt-3 = 35, Yt-2 = 28, Yt-1 = 38, and Yt = 30. Obtain 1 and 2 steps ahead predictions made from time t.
+
+SolutionY^t+1|t=401-0.61-0.6+0.6*30=58.Y^t+2|t=401-0.621-0.6+0.62*30=74.8.
+
+Will these predictions converge to any value? To know this, it is necessary to obtain a formula for the long-term forecast.
+
+9.6 - Long Term Forecasts
+In the case without constant, the prediction for t+k was given by the last observation, whichever k was, so it becomes obvious that the long-term prediction, when k tends to infinity, is Yt. When we added the constant φ0, we saw that the forecast increased or decreased infinitely with k, depending on the sign of φ0. Therefore, it makes no sense to speak of long-term forecast, since the forecast function diverges when k tends to infinity.
+
+However, in the case of the AR model, considering that |φ1| < 1 (stationarity condition), it is easy to see that when k tends to infinity, the prediction function becomes:
+
+Y^t+k|t→k→∞φ01-φ0
+know more
+Note that this function matches the expected value of the model. It is usual to call this expected value unconditional, to differentiate it from the forecast, which is a conditional expected value (to the information up to time t). Thus, we conclude that the long-term forecast of the AR(1) model is given by its unconditional mean E(Yt). This result is also valid for any stationary time series model.
+
+9.7 - Forecasts for Models AR(p), p > 1
+In this case, it is recommended to calculate forecasts manually, rather than getting a general formula. The following example illustrates the procedure.
+
+Example 9.3 - Consider the AR(1) model: Yt = 2 + 0.8Yt-1 + 0.5Yt-1 + εt. If Yt-3 = 35, Yt-2 = 28, Yt-1 = 38, and Yt = 30. Obtain 1 and 2 steps ahead predictions made from time t.
+
+Solution:
+
+Writing the model for t+1:Y^t+1=2+0.8Yt+0.5Yt-1+εt+1.Y^t+k|t=E(Yt+k|Yt,Yt-1,... .) = E(2+0.8Yt+0.5Yt-1+εt+1|Yt,Yt-1,...)=2+0.8(Yt+k|Yt,Yt-1,...) = 0.5 E(Yt-1|Yt,Yt-1,...)+E(εt+1|Yt,Yt-1,...)=2+0.8Yt+0.5Yt-1 Because E(εt+1|Yt ,Yt-1,...)=0 Substituting Yt and Yt-1:Y^t+k|t=2+0.8∗30+0.5∗38=45.Writing the model for t+2: Yt-2 =2 +0.8Yt-1+0.5Yt +εt+2Y^t+2=E(Yt+2|Yt+1,Yt,...) = E(2+0.8Yt+0.5Yt-1+εt+1| Yt,Yt-1,...)2+0.8E(Yt+1|Yt,Yt-1,) = 0.5E(Yt|Yt,Yt-1,...)+E(εt+2|Yt ,Yt-1,...)Using now that E(Yt+1|Yt,Yt-1,...)=Y^t+1|t, by definition, we get:Y^t+2=2+ 0.8*Y^t+1|t+0.5Yt==2+0.8*45+0.5*30=53
+The same goes for predictions for t+3, t+4, always using E(Yt+k│Yt,Yt−1,…)= Yt+k|t, which basically corresponds to using predictions instead of unavailable observations
+
+unavailable
+
+ 9.8 - Forecast Error Variance
+ Click the button above.
+Remembering that:
+
+et+k|t=Yt+k-Y^t+k|t
+is the prediction error k steps ahead, the variance of the prediction error is:
+
+V(et+k|t)=V(Yt+k-Y^t+k|t)
+To get the expression for the case of AR(1), for example, let's use the expressions already obtained:
+
+Yt+k=φ0(1+φ0+φ12+...+φ1k-1)+φ1kYt+φ1k-1εt+1+φ1k-2εt+2+...+εt+ke:Y^t+k|t= E(Yt+k|Yt,Yt-1,...)=φ0(1+φ0+φ12+...+φ1k-1)+φ1kYt
+such that:
+
+Yt+k-Y^t+k|t=φ1k-1εt+1+φ1k-2εt+2+...+εt+k
+As these variables are uncorrelated, the calculation of variance is simple, given by:
+
+V(Yt+k-Y^t+k|t)=φ12(k-1)V(εt+1)+φ12(k-2)V(εt+2)+...+V(εt+k)
+Finally, using that:V(εt+k)=σ2, ∀k:
+
+V(et+k|t)=φ12(k-1)σ2+φ12(k-2)σ2+...+σ2=(φ12(k-1)+φ12(k-2)+...+1 )σ2.
+the term in parentheses being a e.g. with a 1 = 1 and ratio q = φ12, whose sum is:
+
+1-φ12k1-φ12
+So we can finally write:
+
+V(et+k|t)=σ21-φ12k1-φ12
+Making k = 1 in the previous formula, we have an important particular case, which is the 1 step forward forecast error variance:
+
+V(et+k|t)=σ2(1-φ12k)(1-φ12)=σ2
+Interestingly, it is exactly equal to the model error variance. See the following example.
+
+Example 9.4 - Determine the forecast error variances a horizon of 5 steps ahead of the AR(1) with mean zero, coefficient φ1 equal to 0.8 and error variance σ2 equal to 1.8.
+
+Reply:
+
+Remembering that, from the definition of forecast horizon, presented in class 2, what is being asked are forecasts for up to 5 steps, that is, for 1, 2, 3, 4 and 5 steps ahead. These forecasts are, respectively, 1.8, 2.95, 3.69, 4.16 and 4.46.
+
+A convergence process can be seen, illustrated in the following graph:
+But why does it converge to 5? This involves the variance of the long-term forecast error.
+
+The variance of the long-term forecast error is easily obtained by making k tend to infinity:
+
+V(Y^t+k|t)=→k→∞σ2(1-φ12)
+Hence, it is concluded that, similarly to what happens with point forecast, the forecast error variance also converges to the unconditional variance of the model. This result also extends to any time series model, as long as it is stationary.
+
+9.9 - Interval Forecasts
+As with any application of statistics, a measure of position (point forecast) does not need a measure of dispersion, or more specifically, a confidence interval. In the context of a forecast, this interval is called an interval forecast.
+
+The 95% interval prediction is given by:
+
+95%CI(Y^t+k|t)=Y^t+k|t±1.96V^(et+k|t)
+where V ̂(e_(t+k|t) ) is the estimate of V(e_(t+k|t))=σ^2, obtained by replacing the estimate of σ^2 and the model coefficients in theoretical variance of the forecast error.
+
+Comment
+Note that the variance increases with the horizon, which makes the interval forecast reach its maximum amplitude in the case of the long-term forecast. This should (should) be a warning to anyone trying to make predictions for long horizons.
+
+Let's now perform the point and interval forecast for the grade used in the example from the previous class, for which we estimated an AR(2).
+
+Forecasting a Time Series in R
+# Remembering the initial steps:
+data <− read.table(\ "clipboard\")
+Y <− ts(data, start=c (2000.1), end=c (2019.12), frequency=1 2)
+
+# Dividing the series into the training and validation period:
+
+training <− window(Y, end=c(2018, 12))
+validation <− window(Y, start=c(2019, 1))
+
+# Estimating the AR(2) model, already identified and confirmed via overfixation:
+
+Fit2 <−Arima(training,order=c (2,0,0), include.constant=F )
+
+# Driving predictions for the horizon h = 12:
+
+Y_prev <− forecast(fit2,h=12)
+
+# Plotting predictions along with the series (in the training period):
+
+plot(Y_prev)
+
+# The result is:
+# (shaded areas correspond to 80% and 95% confidence intervals)
+Plotting predictions along with the series (in the validation period):
+
+plot(validation,type='l')
+lines(Y_prev$mean, col='red')
+Figure 9.3 - Forecasts out of Sample x Observations in the Validation Period. Source: Author
+
+in which an apparently adequate adjustment for the out of sample period is perceived.
+
+To obtain the quality measures of the predictions for the validation period, just use the command:
+
+accuracy(validation,Y_prev$mean)
+
+The result is:
+
+ME RMSE MAE MPE MAPE
+
+Test set −0.4117806 2.121449 1.598908 −21852.53 22108.35
+
+Note that all measurements assume low values, with the exception of MAPE. This occurs because # values ​​are very close to zero in the validation period, “inflating” the denominator, which should be seen as an inadequate situation for the use of this specific measure.
+
+Activity
+The following is the annual series of bituminous coal production in the United States between the years 1920 and 1968.
+
+If this series has an average of 500 and we adjust the model for it: Y_t=_0+〖0.5Y〗_(t−1)+ε_t, consider the following statements:
+
+The 1 step ahead forecast is 500
+The 1 step ahead prediction is not possible to determine.
+The long-term forecast is 500
+The long-term forecast is indeterminate as it depends on _0
+Only the statements are correct:
+
+a) I and III
+b) II and IV
+c) I and IV
+d) II and III
+e) III
+
+An MA(1) model was identified for a time series. The initial overfixation tests are conducted based on the estimation of the models:
+
+a) AR(1) and MA(1)
+b) AR(1) and MA(2)
+c) MA(2) and WEAP(1,1)
+d) MA(2) and ARMA(1,2)
+e) AR(1) and WEAPON(1,1)
+
+
+Option c. Overfixation corresponds to increasing p from 0 to 1 (ARMA(1,1)) and q from 1 to 2 (MA(2)).
+
+Let the model be: Y_t=〖0.5Y〗_(t−1)+ε_t, ε_t ~┴(iid) " N" (0.3), ∀t, estimated for the series: Y_1=4, Y_2=5, Y_3= 6. The variance of the 1-step-ahead prediction error, originating from t = 3, is:
+
+a) 1.5
+b) 3
+c) 4
+d) 6
+e) 12
+
+
+Option b. The 1 step forward variance is equal to the model error variance, therefore equal to 3.
