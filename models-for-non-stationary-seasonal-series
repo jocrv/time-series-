@@ -1,0 +1,414 @@
+10
+Models for non-stationary and seasonal series
+Presentation
+We will present models for non-stationary and seasonal series. In the case of non-stationary series, we will study the concept of stochastic trend, the procedure to identify it and the method to remove it.
+
+The ARMA model for this type of series is now called ARIMA. In the case of seasonal series, we will see the SARIMA model class.
+
+Goals
+Examine the concept of stochastic trend;
+Identify and estimate ARIMA models;
+Identify and estimate SARIMA models.
+stochastic trend
+The trend is one of the components that can be present in the structure of a time series (the others are seasonality, cycle and irregular). A trend is broadly defined as a smooth trajectory around which the series oscillates.
+know more
+This definition, although clear, is quite subjective and paves the way for different trend specifications. Modern time series literature divides trends into two types: deterministic and stochastic.
+
+In this class we will bring the concept of stochastic trend, which is much more common to represent the behavior of a time series.
+
+The concept is simple. A series has a stochastic tendency, or unit root, if it needs to be differentiated at least once to become stationary: Δy_t=y_t-y_(t-1).
+
+See the example we've separated for you.
+
+Consider the time series with the following observations: Y1 = 2, Y2 = 4, Y3 = 7, Y4 = 9 and Y5 = 10. Assuming that this series has a stochastic trend, make it stationary.
+
+Solution:
+
+The differentiated series is: Z1 = Y2 - Y1 = 4 – 2 = 2, Z2 = Y3 – Y2 = 3, Z3 = 2, Z4 = 1.
+
+It is easy to see that the growing series initially presented became “stable” through transformation.
+
+To explain the theoretical foundation underlying the differentiation, the simplest unit root case will be considered: The simple random walk (without constant): Yt = Yt-1 + εt.
+
+We have already shown that the above process is non-stationary. Differentiating, we obtain:
+
+zt=Δyt=εt,
+
+that is, white noise, which is by definition stationary.
+
+But why the alternative name “unitary root”? Writing the model in terms of B, we have:
+
+yt=Byt+εt
+
+(1−B)yt=εt.
+
+The characteristic equation, therefore, is:
+
+(1−B) = 0,
+
+whose root is: B = 1. This is where the name unitary root comes from, which is more common in econometric literature.
+Comment
+It should be noted that not every series with a unit root follows a simple random walk, this is just the simplest example. However, this example is useful to illustrate how applying the difference can convert a non-stationary process to a stationary one.
+
+A series can have a stochastic and deterministic tendency at the same time, as we will see below. The relevant distinction is between TS and DS series/processes.
+
+DS and TS Series/Processes
+A series - or, more appropriately, its generating process, is classified as a Trend Stationary, or TS, if:
+
+has a deterministic bias and (most importantly below)
+becomes stationary when estimating and removes this trend.
+Or: It is the one that presents stationary behavior around a deterministic trend.
+
+The simplest example of this type of template is:
+
+Yt = Tt + εt = β0 + β1t + εt.
+We've already seen in this discipline how to estimate and remove a trend in this case. We also saw that Tt can be another function of t, not necessarily linear. As the estimation and removal of the Tt trend make the series stationary, this model is classified as TS. The name means stationary on the trend - or, as you would be more precise - around the trend.
+
+A series - or, more properly, its generating process - is classified as a Difference Stationary, or DS, if it only becomes stationary through the application of differences. The name means: stationary (o) in the difference, or, as it would be more precise, after the difference.
+
+Being DS, therefore, is synonymous with having a unit root, that is, presenting a stochastic tendency.
+
+It is important to emphasize that a deterministic trend may or may not be present, however, in the case of a DS process, removing this trend does not make the series stationary.
+
+Let now be the random walk with constant: Yt = ϕ0 + Yt-1 + εt.
+
+By recursive replacement, we obtain:
+
+Y1 = ϕ0 + Y0 + ε1.
+
+Y2 = ϕ0 + Y1 + ε2 = 2ϕ0 + Y0 + ε1 + ε2.
+
+Y3 = ϕ0 + Y2 + ε3 = 3ϕ0 + Y0 + ε1 + ε2 + ε3.
+
+The general form is:
+
+yt=y0+φ0t+∑i=1tεi
+Thus, when we write the general shape of the model, we see that it has a deterministic tendency y_0+φ_0 t, but its removal does not make the series stationary. Indeed:
+
+yt-y0+φ0t=∑i=1tεi
+Once the deterministic bias is removed, we are left with ∑i=1tεi . But this is the general form of a random walk without a constant, which we know to be a non-stationary process. Therefore, although the deterministic tendency is present, its removal was not enough to make the series stationary. This is characteristic of a DS process.
+
+To show that differentiation makes the process stationary, it is not necessary to write the process in general form. Indeed:
+Yt = ϕ0 + Yt−1 + εt.
+
+Yt + Yt−1 = ϕ0 + εt,
+
+which is clearly a stationary process.
+
+The previous model is more often suitable for general series, mainly economic series, than simple random walk (no constant). Although it has a deterministic trend, it is not stationary around this trend. This helps to understand the distinction from the TS model, which in turn is stationary in the trend.
+
+A conclusion of this section is that, although a series can present a deterministic and stochastic tendency simultaneously, it cannot be, at the same time, TS and DS.
+
+ARIMA model
+ARMA models can only be estimated for stationary series. However, this is not a limitation of the methodology proposed by Box and Jenkins, since, as seen, a non-stationary series can be transformed into a stationary one through its differentiation.
+
+It may be necessary to differentiate Yt more than once to make it stationary.
+Example
+Zt = Δ(ΔYt) = Δ2Yt. If d is the total of necessary differences, Yt is said to be integrated of order d (“i of d”). The resulting stationary series (after the d differences) is represented by Zt = ΔdYt.
+
+In this way, once a non-stationary series has been differentiated d times - thus becoming stationary -, an ARMA model can be estimated to represent it. In this case, we say that the original series, Yt, follows an ARIMA(p,d,q) model.
+
+Formally, the ARIMA model of p, d, and q orders for Yt is specified as follows:
+
+Zt=φ0+φ1 Zt−1+φ2 Zt−2+...+φp Zt−p+εt
+
+−θ1 εt−1−θ2εt−2−...−θq εt−q, with Zt= ΔdYt.
+
+So, if Zt follows an ARMA(p,q), we say that Yt follows an ARIMA(p,d,q), where the “I” in the middle stands for Integrated (=integrated).
+
+Identification of a non-stationary series
+To identify non-stationarity, in addition to the series graph, it is possible to use the FAC, which should show a very slow decay. This is because the FAC of an AR(1) is given by ρk = ϕk, and the simple random walk, unit root “standard” case, can be seen as an AR(1) with ϕ = 1. Thus, the estimate of the FAC, for a series with a unit root, will present values ​​close to 1, for all k.
+
+Identification of a non-stationary series in R
+data <- read.table("clipboard")
+
+Y <- ts(data, start = c(1999,12), end = c(2020.7), frequency = 12)
+
+training <- window(Y, end=c(2019, 12))
+
+validation <- window(Y, start=c(2020, 1))
+
+ggtsdisplay(training) # plots FAC and FACP , this function is in the "forecast" library
+
+The output of R for the above function is as follows:
+A very slow decay of the FAC can be seen in the graph, confirming the theory. The command to differentiate the series is: trained = diff(training). Applying the ggtsdisplay function to Yd:
+in which we realize that the series was stationary, at least on average, which can be seen directly from the graph. Additionally, the estimated FAC and FACP allow identifying p = 1 and q = 0 (why?), so that the initial model for the IPCA series is an ARIMA(1,1.0).
+
+The estimation of an ARIMA model can be conducted using the fit command, however setting it different from zero, that is, to estimate the ARIMA(p,1,q) just do:
+
+  
+fit<-Arima(training,order = c(p,1,q)).
+
+know more
+It should be clear that such a procedure is equivalent to estimating an ARMA(p,q) for the differentiated series, through the use of fit<-Arima(treinod,order = c(p,0,q)), where trained is the differentiated series. However, this last format makes the forecasting process difficult, since after using the R command for forecasts, it would be necessary to “recover” the original series.
+
+Continuing the example in R, the overfixation test leads to the non-significance of the incidental parameters AR (p=2) and MA (q = 1), when incorporated separately, however, when specified together, in an ARIMA(2.1, 1) these parameters were significant. Thus, the ARIMA(1,1,0) (initial) and ARIMA(2,1,1) models must be compared based on the information criteria, using the summary(fit) command.
+
+The following table reports the results:
+The ARIMA(2,1,1) model came out as a winner at this stage, as it presents lower values ​​for the AIC and for the BIC. Overfixing again (p = 3 and/or q = 2), the resulting 3 specifications were not significant. Thus, the final model is ARIMA(2,1,1), whose equation is:
+
+Zt=ϕ0+1.6067Zt−1−0.607Zt−2
+
++εt−0.976εt−1, with Zt= ΔdYt.
+
+Forecast with the ARIMA model
+The predictions for the ARIMA model, for a horizon h, can be obtained through the usual command:
+
+  
+Y_prev <- forecast(fit,h)
+
+being fit the adjusted ARIMA model.
+
+know more
+An important point to be highlighted is that the prediction function of the ARIMA(0,1,1) model is equivalent to the prediction function of the exponential smoothing method, provided that some restrictions are imposed on the  parameter of the model. In other words, the exponential smoothing method is equivalent to a restricted ARIMA model.
+
+This leads us to definitively conclude that the ARIMA approach is superior to the method, since if we can use a more general specification and determine the “optimal” parameters that will lead to the best predictions, why consider a prediction function that works restrictions on such a specification, being a mere particular case?
+
+Variance Stabilizing Transformations
+A series can also be non-stationary in variance. In this case, the proper procedure is to apply a transformation to the original series to stabilize the variance. The most common example of transformation with this property is the logarithm.
+
+A broader class of variance-stabilizing transformations was proposed by Box and Cox:
+Yλ-1λ, for λ≠0
+
+In(Y), for λ=0.
+
+where λ is estimated. The transformation is called the Box and Cox transformation.
+
+Box-Cox transformation in R
+The BoxCox.lambda function estimates λ. The BoxCox function applies the transformation, for a given λ (in this case, we use what was estimated by the BoxCox.lambda function). Applying to the series in the previous example (IPCA):
+
+  
+lambda <- BoxCox.lambda(Y)
+
+lambda
+
+Y <- BoxCox(Y, lambda)
+
+We have, as a result: lambda = 0.52, very different from 1 (which means not to transform the series).
+
+In fact, when we look at the graph generated by R for the differentiated series, it is possible to notice that the variance is not constant. However, it is important to note that, in the case of non-stationary series in the mean and in the variance, the Box-Cox transformation must be applied before differentiation.
+
+Even though the visualization that the variance varies over time became clearer after differentiation. Thus, the value of λ in the previous example should have been estimated for the original series, and in this case the result is 0.71, not 0.52.
+
+Finally, it should be noted that, taking into account that the purpose of Box and Jenkins' modeling is to conduct forecasts, the most appropriate would be to obtain the estimate of λ for the part of the series that will effectively be modeled, that is, for the period of training. In this case, the lambda will be different from the one obtained for the entire series.
+Comment
+In the example above, if we take the year 2020 as the validation period, the estimated λ for the training period corresponding to the IPCA series changes from 0.71 to 0.398 (!).
+
+The SARIMA model
+The ARIMA model can be extended to consider the seasonality of the time series. The resulting model is called SARIMA (= Seasonal ARIMA).
+Comment
+SARIMA models do not allow isolating the seasonal component, therefore they do not make it possible to seasonally adjust (or deseasonalize) the series, however, they constitute a powerful and flexible instrument to predict seasonal series.
+
+In the SARIMA model, in addition to p, q and d, we have 3 more constants to identify: P, Q and D, in which capital letters denote the terms seasonal AR, seasonal MA and seasonal difference.
+
+The general representation of a SARIMA model for a stationary series (d = D = 0) is:
+
+(1 - ϕ1B - ϕ2B2 - … - ϕpBp) (1 - Φ1BS - Φ2B2S - … - ΦpBPS)Yt =
+
+(1 - θ1B - θ2B2 - … - θpBq) (1 - Θ1BS - Θ2B2S - … - ΘpBQS)εt.
+
+where S is the seasonal period, for example, S = 12 if the series is monthly with annual seasonality. This model is sometimes called SARMA (without the I as it represents a stationary series). This model is generally denoted by SARIMA(p,d,q)x(P,D,Q)S.
+
+Which can be decomposed, Y`s and ε`s, as follows:
+
+(1 - ϕB - ΦBS + ϕΦBS+1)Yt = (1-θB-ΘBS+θΘBS+1)εt.
+
+Yt - ϕYt-1 - ΦYt-S + ϕΦYt-(S+1) = εt - θεt-1 -Θεt-S + θΘεt-S+1.
+
+Yt = ϕYt-1 + ΦYt-S - ϕΦYt-(S+1) = εt - θεt-1 -Θεt-S + θΘεt-S+1.
+
+If the series considered is non-stationary, we need to include d and D in the model specification. The equation in this case becomes:
+
+(1 - ϕ1B - ϕ2B2 - … - ϕpBp) (1 - Φ1BS - Φ2B2S - … - ΦpBPS)(1-B)(1-BS)Yt =
+
+(1 - θ1B - θ2B2 - … - θpBq) (1 - Θ1BS - Θ2B2S - … - ΘpBQS)εt.
+
+where the part new to the previous specification has been placed in bold.
+
+Another way to represent the above equation is:
+(1 - ϕ1B - ϕ2B2 - … - ϕpBp) (1 - Φ1BS - Φ2B2S - … - ΦpBPS)Zt =
+
+(1 - θ1B - θ2B2 - … - θpBq) (1 - Θ1BS - Θ2B2S - … - ΘpBQS)εt.
+
+Let's practice?
+
+Consider the model with p = q = P = Q = d = D = 1, that is, a SARIMA(1,1,1)x(1,1,1)S.
+
+The model equation is:
+
+(1-ϕB)(1-ΦBS)(1-B)(1-BS)Yt = (1-θB)(1-ΘBS)εt.
+Decomposition follows the same logic as above, and is left as an exercise for you.
+
+A very famous SARIMA model is the AIRLINE, which received its name because it was used with extreme success to forecast the monthly sale of airline tickets in England, in the 1970s, being the most famous example of the application of this class of models.
+
+The AIRLINE model presents q = Q = d = 1 and P = p = 0, that is, it is a SARIMA(0,1,1)x(0,1,1)S.
+
+The model equation is:
+
+(1-B)(1-BS)Yt = (1-θB)(1-ΘBS)εt.
+Identification of a SARIMA model
+The identification of SARIMA models follows the same logic as before. It is recommended to separately identify seasonal and non-seasonal lags.
+
+Example
+If the FAC of a monthly series with annual seasonality presents statistical significance in lags 12 and 24, and is not significant in 36, 48 etc., it is said that it is truncated in the second seasonal lag, leading to the identification of Q = 2. If the decay is slow in seasonal lags, D = 1 is identified (or greater than 1, although it is very unusual, but it can be seen from the FAC behavior for the seasonally differentiated series).
+
+Now look at the decomposition of the series. We have that, if S = 12, there is a dependency on lag 13 (S+1). Thus, after identifying seasonal lags, we must look at their neighborhoods, in order to identify non-seasonal lags.
+
+The identification of a SARIMA model that only has a seasonal part, that is, SARIMA(0,0,0)x(P,D,Q)S, both the FAC and the FACP only present values ​​other than zero in the seasonal lags; is relatively simple, being conducted according to the following theoretical standards:
+Case 1 - D equal to zero:
+
+I. Both the FAC and the FACP only have values ​​other than zero in seasonal lags;
+
+II. If P is non-zero, the FACP e is truncated at lag P (for example, if P = 3, it only presents non-zero values ​​at lags 12, 24 and 36, assuming a zero value for all others). FAC shows exponential or seasonal decay in seasonal lags;
+
+III. If Q is nonzero, the FAC is truncated at lag Q (for example, if Q = 2, it only has nonzero values ​​at lags 12 and 24, assuming zero value for all others). The FACP shows exponential or seasonal decay in seasonal lags.
+
+Case 2 - If D is different from zero:
+
+I. FAC exhibits a slow decay in seasonal lags. Therefore, the series needs to go through D seasonal differences, so that the procedure for case 1 is then applied.
+
+II. When p, d, and q are nonzero (or some of them are), there is a mixture of patterns that makes identification quite complex. The complexity of identification is even the “Achilles' heel” of the SARIMA models. Thus, it is interesting to treat the initial model with parsimony, especially with regard to non-seasonal lags, and apply the overfixation procedure sequentially until the model is reached.
+
+Estimation and predictions with the SARIMA model
+Regarding estimation, diagnosis and forecasting, nothing changes compared to the non-seasonal version.
+
+Regarding the estimation, again we can use the fit command, but with the following modification in the specification of the function parameters:
+
+  
+fit <- Arima(Y,order = c(p,d,q), seasonal = list(order = c(P,D,Q),period=S))
+
+For example, to estimate the AIRLINE model for a monthly series, use the command:
+
+  
+fit <- Arima(Y,order = c(0,1,1), seasonal = list(order = c(0,1,1),period=12))
+In relation to forecasts, just apply the forecast function to the model in fit, as before.
+
+An important point to be highlighted is that the prediction function of the AIRLINE model is equivalent to the prediction function of the Holt-Winters method for seasonal series, presented in class 2, provided that some restrictions are imposed on the model parameters.
+
+Comment
+In other words, the Holt-Winters method is equivalent to a SARIMA model with parameters restriction. This leads us to definitively conclude that the SARIMA approach is superior to the Holt-Winters method. After all, if we can use a more general specification and determine the “optimal” parameters that will lead to the best predictions, why consider a prediction function that results from restrictions on this specification?
+
+Code in R for Analysis of a Seasonal Series Via SARIMA Modeling
+
+  
+data <- read.table("clipboard")
+
+Y <- ts(data, start = c(2000,1), end = c(2020,2), frequency = 12)
+
+# the series used is that of figure 1.7 of class 1 (Number of passengers, ANAC).
+
+# setting the training and validation periods as in class 2
+
+training <- window(Y, end=c(2018, 12))
+
+validation <- window(Y, start=c(2019, 1))
+
+ggtsdisplay(training) # FAC and FACP
+
+The result obtained is:
+Slow decay points to the need for differentiation. Applying:
+
+trained = diff(training) # differentiates the series
+ggtsdisplay(treinod) # The result obtained is:
+ Source: Author
+A slow FAC decay is now observed in seasonal lags, pointing to the need for seasonal difference:
+
+trainingdD = diff(trainod,12) # seasonally differentiates the series.
+ggtsdisplay(treinodD) # The result obtained is:
+Looking only at seasonal lags, the FAC truncated at lag 12 (remember that the identification process needs to be parsimonious) points to Q = 1. The FACP shows decay in seasonal lags (12, 24, ...), indicating P = 0. Looking now at the non-seasonal lags, it is possible to observe that the FAC appears to be truncated at lag 1 (note, in addition to the significant lag 1, neighborhoods 11 and 13 of the first seasonal lag).
+
+The FACP's behavior leaves in doubt between being truncated at lag 1 or a decay (this is because, in the vicinity of the first seasonal lag, 12, 11 is significant but 13 is not, whereas lag 24 is clearly significant).
+
+As already mentioned, it is recommended to treat non-seasonal lags sparingly, and so we will start with p = 0 and q = 1. Thus, our initial model is a SARIMA(0,1,1)x(0,1,1) .
+
+The command to estimate it in R is (must be applied to the ORIGINAL series, without the differences):
+
+  
+fit <- Arima(training = c(0,1,1), seasonal = list(order = c(0,1,1),period=12))
+
+The estimated coefficients for this model are obtained by the command:
+
+  
+coeftest(fit) # remembering that this command belongs to the lmtest library
+
+The overfixation test conducted for p, q, P and/or Q are all non-significant, both individually and together. If any had a significant result, the comparison between the corresponding models would be made using information criteria.
+
+Example
+If the models with p =1 and with Q = 2 had been significant, the models to be compared, via information criteria, would be the SARIMA(0,1,1)x(0,1,1)12 (initial), the SARIMA(1,1,1)x(0,1,1)12 and the SARIMA(0,1,1)x(0,1,2)12.
+
+The final model equation is:
+
+(1-B)(1-BS)Yt = (1-0.2734B)(1-0.448B12)εt.
+
+The predictions provided by this model are obtained from the following commands:
+
+Y_prev <- forecast(fit,h=14) # remembering that 14 months were set aside for validation
+plot(Y_prev)
+The result obtained is:
+Plotting forecasts along with the validation period, via commands:
+
+plot(validation,type='l')
+lines(Y_prev$mean, col='red')
+The following result is obtained:
+
+ Source: Author
+
+It is possible to notice that seasonality is very helpful in predicting the series, leading to an apparently very good fit in the validation period. In fact, the Box and Jenkins methodology is even more effective when the interest is to predict series that present seasonality.
+
+Activities
+Consider the models:
+
+I. Yt= Φ0+ Φ1 Y(t−1)+Φ2Yt−2+…+ ΦpYt−p+εt−θ1 εt−1−θ2 εt−2−…−θq εt−q
+
+II: Zt=Φ0+Φ1 Zt−1+Φ2 Zt−2+…+Φp Zt−p+εt−θ1 εt−1−θ2 εt−2−…−θq εt−q
+
+ 
+where Zt=ΔdYt.
+
+ 
+Now consider the following statements:
+
+If model II is valid and model I is not, then Yt follows an ARIMA (p,d,q).
+
+If model II is valid and model I is not, then Zt follows an ARMA (p,q).
+
+Model II only makes sense if model I is not valid.
+
+If Yt follows an ARMA(p,q), Zt follows an ARIMA(p,d,q)
+
+Only the statements are correct:
+
+a) I and III
+b) II and IV
+c) III and IV
+d) I, II and III
+e) I, II and IV
+
+D. Model 2 is an ARMA to Zt difference, ie it is an ARIMA to Yt. Thus, the first three statements are correct, but the fourth reverses Zt with Yt in the statement, which would be correct if it were: If Z_t follows an ARMA(p,q), Y_t follows an ARIMA(p,d,q).
+
+2. A SARIMA(0,0,1)x(1,1,0)s model can be represented as follows:
+
+a) (1-ϕB)(1-BS)Yt = (1-ΘBS)εt.
+b) (1-ΦBS)(1-BS)Yt = (1-θB)εt.
+c) (1-ΦBS)(1-B)Yt = (1-θBS)εt.
+d) (1-ΦBS)(1-BS)Yt = (1-θBS)εt.
+e) (1-ΦBS)(1-B)Yt = (1-θB)εt.
+
+D. This is the equation of a SARIMA with p = 0, d = 0, q = 1, P = 1, D = 1 and Q = 0.
+
+3. The following series represents the output of the R ggtsdisplay function for the primary surplus (revenue – expenditure) series of the Brazilian general government, expressed as a proportion of GDP, over the period between January 2003 and October 2017:
+
+ Source: Author
+
+This series went through a difference and the new result obtained with the application of the function was:
+
+ Source: Author
+
+The model to be identified for the original series is:
+
+a) ARIMA(1,1.0)
+b) ARIMA(0,1,1)
+c) SARIMA(0,0,0)x(1,1,1)12
+d) SARIMA(0,0,0)x(1.0,1)12
+e) SARIMA(0,1,0)x(1,0,1)12
+E. The FAC of the original series presents slow decay, indicating d = 1. Once differentiated, FAC and FACP are observed truncated in the first seasonal lag (12), that is, P = Q = 1. Therefore, the model is SARIMA (0,1.0)x(1.0,1)12.
